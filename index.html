@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+
+<head>
+    <title>Prototype</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="favicon.png" type="image/png">
+    <meta charset="UTF-8">
+</head>
+
+<body onload='initialize()'>
+
+	<div id="timeline"></div>
+
+	<div class="slidecontainer">
+		<input type="range" min="0.5" max="1.5" value="1" step="0.05" class="slider" id="temperatureSlider">
+		<label>Temperature: </label>
+		<span id="temperatureDisplay"></span>	
+	</div>
+
+	<button onclick='MAIN_TIMELINE.play()'>PLAY</button>
+	<button onclick='Playback.stop()'>STOP</button>
+
+	<div id="cardHolder" class="cardHolder"></div>
+	
+	<!-- Libs -->
+	<!-- <script src="https://cdn.jsdelivr.net/npm/@tonaljs/tonal/browser/tonal.min.js"></script> -->
+	<script src="https://cdn.jsdelivr.net/npm/@magenta/music@1.22.1/dist/magentamusic.min.js"></script>
+
+	<!-- Classes -->
+	<script src='core/Player.js'></script>
+	<script src='core/SequenceUtils.js'></script>
+	<script src='GUI\DragAndDrop\DragAndDrop.js'></script>
+	<script src='GUI\Cards\Card.js'></script>
+	<script src='GUI\Cards\SequenceCard.js'></script>
+	<script src='GUI\Cards\SequenceGenerator.js'></script>
+	<script src='GUI\Cards\MelodyGenerator.js'></script>
+	<script src='GUI\Cards\DrumsGenerator.js'></script>
+	<script src='GUI\Cards\InterpolationCard.js'></script>
+	<script src='GUI\Timeline\TimelineStep.js'></script>
+	<script src='GUI\Timeline\Timeline.js'></script>
+	<script src='GUI\Timeline\Track.js'></script>
+
+	<!-- Core -->
+	<script src='GUI/GUI.js'></script>
+	<script src='noteSequences/Melodies.js'></script>
+	<script src='noteSequences/DrumSequences.js'></script>
+	<script src='magenta/music_RNN.js'></script>
+	<script src='magenta/music_VAE.js'></script>
+	<script src='core/core.js'></script>
+	
+
+</body>
+
+</html>

@@ -1,0 +1,78 @@
+.visualizer {
+    background-color: white;
+    margin: 10px;
+    border-style: solid;
+    border-color: black;
+    border-width: 1px;
+}
+
+.card {
+    background-color: rgb(198, 255, 193);
+    padding: 1px 3px;
+    width: 200px;
+    height: 300px;
+    text-align: center;
+    border-color: #120023;
+    border-style: solid;
+    border-width: 5px;
+    margin: 2px;
+}
+
+.sequenceCard.Melody {
+    background-color: rgb(120, 8, 224);
+}
+
+.sequenceCard.MelodyGenerator {
+    background-color: rgb(179, 125, 230);
+}
+
+.sequenceCard.Drums {
+    background-color: rgb(33, 30, 36);
+}
+
+.sequenceCard.DrumsGenerator {
+    background-color: rgb(70, 70, 70);
+}
+
+.sequenceCard.MelodyInterpolator {
+    background-color: rgb(75 155 255);
+}
+
+.card.highlighted {
+    border-style: dashed;
+    border-color: #ff6a00;
+    background-color: #64cc00;
+}
+
+.sequenceCard p {
+    color: white;
+    font-weight: bold;
+    font-size: 14pt;
+}
+
+.cardHolder {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.timeline {
+    overflow-x: scroll;
+    overflow-y: visible;
+}
+
+.track {
+    width: fit-content;
+    height: 100px;
+    background-color: rgb(235, 117, 8);
+    margin: 3px;
+    display: flex;
+}
+
+.timelineStep {
+    min-width: 8px;
+    background-color: coral;
+}
+
+.timelineStep.highlighted {
+    background-color: blue;
+}
