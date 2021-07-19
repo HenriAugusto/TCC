@@ -9,6 +9,7 @@ importScripts("https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@2.8.6/dist/tf.min.j
 importScripts("https://cdn.jsdelivr.net/npm/@magenta/music@^1.22.1/es6/core.js");
 importScripts("https://cdn.jsdelivr.net/npm/@magenta/music@^1.22.1/es6/music_vae.js");
 importScripts("/core/SequenceUtils.js");
+importScripts("/magenta/workers/workerUtils.js");
 
 /**
  * A medium-sized 4-bar, 90-class onehot melody model. Quantized to 2-byte weights.
@@ -148,28 +149,5 @@ async function similarSequencesRequest(e){
     e.ports[0].postMessage({
         type: "similarSequencesReply",
         similarSequences: s
-    });
-}
-
-/**
- * Wait for the model's initialization.
- *
- * Since we initialize all models on startup it
- * is better to wait for the initialization.
- * If you try to use the model while it is initialized
- * it gets initialized more than once.
- * @param {MusicVAE|MusicRNN} model
- * @returns {Promise<void>} promise
- */
-async function waitModelInitialization(model){
-    return new Promise( (resolve, reject) => {
-        let loop = setInterval( () => {
-            if( !model.isInitialized() ){
-                console.log("waiting model initialization");
-            } else {
-                resolve();
-                clearInterval(loop);
-            }
-        }, 100)
     });
 }
