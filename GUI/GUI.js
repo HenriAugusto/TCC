@@ -6,14 +6,23 @@ function initGUI(){
 }
 
 function initTemperatureSlider(){
-    var slider = document.getElementById("temperatureSlider");
-        slider.value = rnn_temperature;
-    var output = document.getElementById("temperatureDisplay");
-        output.innerHTML = slider.value;
+    var sliderVAE = document.getElementById("temperatureSliderVAE");
+        sliderVAE.value = VAE.temperature;
+    var displayVAE = document.getElementById("temperatureDisplayVAE");
+        displayVAE.innerHTML = sliderVAE.value;
 
-    slider.oninput = function() {
-        output.innerHTML = this.value;
-        rnn_temperature = parseFloat(this.value);
+    sliderVAE.oninput = function() {
+        displayVAE.innerHTML = this.value;
         VAE.temperature = parseFloat(this.value);
+    }
+
+    var sliderRNN = document.getElementById("temperatureSliderRNN");
+        sliderRNN.value = VAE.temperature;
+    var displayRNN = document.getElementById("temperatureDisplayRNN");
+        displayRNN.innerHTML = sliderRNN.value;
+
+    sliderRNN.oninput = function() {
+        displayRNN.innerHTML = this.value;
+        RNN.temperature = parseFloat(this.value);
     }
 }
