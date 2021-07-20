@@ -40,25 +40,10 @@ class InterpolationCard extends SequenceCard {
         sliderContainer.appendChild(this.slider);
         this.cardDiv.appendChild(sliderContainer);
 
-        this.interpolateSequences(seq1, seq2, steps).then( (seqs) => {
+        VAE.interpolateSequences([seq1, seq2], steps).then( (seqs) => {
             this.InterpolationCard = seqs;
             this.setNoteSequence(seqs[Math.round(steps/2)]);
         });
-    }
-
-    /**
-     * Usies MusicVAE to interpolate between two given sequences.
-     * @async
-     * @param {INoteSequence} seq1 - First NoteSequence
-     * @param {InoteSequence} seq2 - Second NoteSequence
-     * @param {number} n - number of interpolation steps, including the two originals.
-     * @returns {[INoteSequence]}
-     */
-    async interpolateSequences(seq1, seq2, n=4){      
-        let seq1_quantized = SequenceUtils.quantizeIfNeeded( seq1, 4);
-        let seq2_quantized = SequenceUtils.quantizeIfNeeded( seq2, 4);
-        var InterpolationCard = await music_vae_mel_4bar_q2.interpolate([seq1_quantized, seq2_quantized], n, vae_temperature);
-        return InterpolationCard;
     }
 
     /**

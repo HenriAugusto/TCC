@@ -20,7 +20,7 @@ class DrumsGenerator extends SequenceGenerator {
      * @returns {INoteSequence} The generated INoteSequence
      */
     async generateSequence(){
-        let seq = ( await drums_4bar_med_lokl_q2.sample(1, vae_temperature) )[0];
+        let seq = await VAE.getNew4BarDrums();
         return seq;
     }
 }

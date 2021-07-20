@@ -12,9 +12,15 @@
 	<div id="timeline"></div>
 
 	<div class="slidecontainer">
-		<input type="range" min="0.5" max="1.5" value="1" step="0.05" class="slider" id="temperatureSlider">
-		<label>Temperature: </label>
-		<span id="temperatureDisplay"></span>	
+		<input id="temperatureSliderVAE" type="range" min="0.5" max="1.5" value="1" step="0.05" class="slider">
+		<label>VAE Temperature: </label>
+		<span id="temperatureDisplayVAE"></span>	
+	</div>
+
+	<div class="slidecontainer">
+		<input id="temperatureSliderRNN" type="range" min="0.5" max="1.5" value="1" step="0.05" class="slider">
+		<label>RNN Temperature: </label>
+		<span id="temperatureDisplayRNN"></span>	
 	</div>
 
 	<button onclick='MAIN_TIMELINE.play()'>PLAY</button>
@@ -44,8 +50,9 @@
 	<script src='GUI/GUI.js'></script>
 	<script src='noteSequences/Melodies.js'></script>
 	<script src='noteSequences/DrumSequences.js'></script>
-	<script src='magenta/music_RNN.js'></script>
-	<script src='magenta/music_VAE.js'></script>
+	<script src='magenta/RNN.js'></script>
+	<script src='magenta/VAE.js'></script>
+	<script src='magenta/VAE_MidiMe.js'></script>
 	<script src='core/core.js'></script>
 	
 

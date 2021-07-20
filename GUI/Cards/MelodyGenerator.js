@@ -20,7 +20,8 @@ class MelodyGenerator extends SequenceGenerator {
      * @returns {INoteSequence} The generated INoteSequence
      */
     async generateSequence(){
-        let seq = (await music_vae_mel_4bar_q2.sample(1, vae_temperature))[0];
+        //let seq = (await music_vae_mel_4bar_q2.sample(1, vae_temperature))[0];
+        let seq = await VAE.getNew4BarMelody();
         return seq;
     }
 }
