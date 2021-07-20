@@ -23,7 +23,7 @@ class VAE {
 
     /**
      * Generate NoteSequences by sampling the model's prior.
-     * @param {string} type
+     * @param {"melody"|"drums"} type
      * @param {number} nOfBars - size, in bars, of the samples
      * @param {number} numSamples - how much {@link INoteSequence}s to return
      * @param {number} [temperature=VAE.temperature]
