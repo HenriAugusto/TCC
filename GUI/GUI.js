@@ -14,6 +14,6 @@ function initTemperatureSlider(){
     slider.oninput = function() {
         output.innerHTML = this.value;
         rnn_temperature = parseFloat(this.value);
-        vae_temperature = parseFloat(this.value);
+        VAE.temperature = parseFloat(this.value);
     }
 }
