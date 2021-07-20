@@ -13,4 +13,5 @@ function initialize(){
     new DrumsGenerator(DRUM_SEQ_3, "Drum Generator 3");
     VAE.initializeWorker();
     RNN.initializeWorker();
+    VAE_MidiMe.initializeWorker();
 }

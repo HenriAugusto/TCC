@@ -11,12 +11,24 @@
  async function waitModelInitialization(model){
     return new Promise( (resolve, reject) => {
         let loop = setInterval( () => {
-            if( !model.isInitialized() ){
-                console.log("waiting model initialization");
+            // MusicVAE, MusicRNN
+            if( typeof model.isInitialized === 'function'){
+                if( !model.isInitialized() ){
+                    console.log("waiting model initialization");
+                } else {
+                    resolve();
+                    clearInterval(loop);
+                }
+            // MidiMe doesn't have isInitialized()...
             } else {
-                resolve();
-                clearInterval(loop);
+                if( !model.initialized ){
+                    console.log("waiting model initialization");
+                } else {
+                    resolve();
+                    clearInterval(loop);
+                }
             }
+            
         }, 100)
     });
 }
