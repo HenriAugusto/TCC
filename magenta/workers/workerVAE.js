@@ -83,8 +83,8 @@ self.onmessage = async (e) => {
 async function interpolationRequest(e){
     e.data.seqs.map( seq => SequenceUtils.quantizeIfNeeded(seq, 4) );
     let model;
-    if( e.data.seqs.every( seq => seq.notes.every( note => note.isDrum) ) ){
-            model = drums_4bar_med_q2;
+    if( SequenceUtils.isDrumSequence(e.data.seqs) ){
+        model = drums_4bar_med_q2;
     } else {
         model = music_vae_mel_4bar_q2;
     }

@@ -51,7 +51,7 @@ async function continuationRequest(e){
     let data = e.data;
     data.seq = SequenceUtils.quantizeIfNeeded(data.seq, 4);
     let model;
-    if( data.seq.notes.every( note => note.isDrum) ){
+    if( SequenceUtils.isDrumSequence(data.seq) ){
         model = drums_rnn;
     } else {
         if( e.data.chordProgression ){

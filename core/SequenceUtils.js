@@ -17,4 +17,17 @@ class SequenceUtils {
             return seq;
         }
     }
+
+    /**
+     * Checks if one or more sequences only contains drum notes.
+     * @param {INoteSequence|INoteSequence[]}} A sequence or an array of sequences
+     * @returns {boolean} If the sequence only have notes with the `isDrum` property
+     */
+    static isDrumSequence(s){
+        if( !Array.isArray(s) ){
+            return s.notes.every( note => note.isDrum );
+        } else {
+            return s.every( seq => seq.notes.every( note => note.isDrum) );
+        }
+    }
 }

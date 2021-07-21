@@ -40,7 +40,7 @@ let midime = new music_vae.MidiMe({epochs: 100});
     let data = e.data;
     switch (data.msg) {
         case "trainRequest":
-            vaeModel = e.data.seq.notes.every( note => note.isDrum) ?
+            vaeModel = SequenceUtils.isDrumSequence(data.seq) ?
                         drums_4bar_med_q2 :
                         music_vae_mel_4bar_q2;
             await waitModelInitialization(midime);
