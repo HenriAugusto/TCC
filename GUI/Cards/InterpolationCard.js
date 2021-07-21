@@ -6,9 +6,9 @@
 class InterpolationCard extends SequenceCard {
     /**
      * @public
-     * @property {[INoteSequence]} InterpolationCard - Array of {@link InoteSequence}s
+     * @property {[INoteSequence]} interpolatedSequences - Array of {@link InoteSequence}s
      */
-    InterpolationCard;
+    interpolatedSequences;
     slider;
 
     /**
@@ -41,7 +41,7 @@ class InterpolationCard extends SequenceCard {
         this.cardDiv.appendChild(sliderContainer);
 
         VAE.interpolateSequences([seq1, seq2], steps).then( (seqs) => {
-            this.InterpolationCard = seqs;
+            this.interpolatedSequences = seqs;
             this.setNoteSequence(seqs[Math.round(steps/2)]);
         });
     }
@@ -52,9 +52,9 @@ class InterpolationCard extends SequenceCard {
      */
     selectInterpolatedSequence(i){
         i = Math.max(0, i);
-        i = Math.min(this.InterpolationCard.length-1, i);
+        i = Math.min(this.interpolatedSequences.length-1, i);
         console.log("selecting interpolated sequence: "+i);
-        this.setNoteSequence( this.InterpolationCard[i] );
+        this.setNoteSequence( this.interpolatedSequences[i] );
     }
 
     /** 
