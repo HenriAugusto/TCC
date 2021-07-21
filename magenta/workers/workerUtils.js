@@ -9,12 +9,12 @@
  * @returns {Promise<void>} promise
  */
  async function waitModelInitialization(model){
+    console.log("waiting model initialization: "+model.checkpointURL.match(/\w+$/) );
     return new Promise( (resolve, reject) => {
         let loop = setInterval( () => {
             // MusicVAE, MusicRNN
             if( typeof model.isInitialized === 'function'){
                 if( !model.isInitialized() ){
-                    console.log("waiting model initialization");
                 } else {
                     resolve();
                     clearInterval(loop);
@@ -28,7 +28,6 @@
                     clearInterval(loop);
                 }
             }
-            
-        }, 100)
+        }, 250)
     });
 }
