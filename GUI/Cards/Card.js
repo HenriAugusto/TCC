@@ -55,8 +55,6 @@ class Card {
         let titleEl = document.createElement("p");
         titleEl.innerHTML = title;
         this.cardDiv.appendChild(titleEl);
-
-        document.getElementById("cardHolder").appendChild(this.cardDiv);
         
         this.makeCardDraggable();
         this.makeCardDroppable();

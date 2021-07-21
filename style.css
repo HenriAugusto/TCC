@@ -4,6 +4,8 @@
     border-style: solid;
     border-color: black;
     border-width: 1px;
+    width: 80%;
+    height: 40%;
 }
 
 .card {
@@ -53,6 +55,8 @@
 .cardHolder {
     display: flex;
     flex-wrap: wrap;
+    transform: perspective(150px) rotateX(1deg);
+    margin: 20px;
 }
 
 .timeline {
@@ -75,4 +79,33 @@
 
 .timelineStep.highlighted {
     background-color: blue;
+}
+
+/* Those values were defined completely heuristically */
+/* https://jsfiddle.net/HenriAugusto/42z1thuv/42/ */
+.deckIcon {
+    width: 10vmin;
+    height: 10vmin;
+    position: fixed;
+    display: flex;
+    flex-direction: column-reverse;
+    right: 0;
+    bottom: 0;
+}
+
+.deckIcon.outOfCards {
+    filter: saturate(0);
+}
+
+.deckIconComponent {
+    background-color: magenta;
+    border-style: solid;
+    border-color: black;
+    border-width: 2vmin 1vmin;
+    width: 61.8%;
+    height: 100%;
+    margin: 0 0 -124% 0;
+    transform: translate(-1vmin, -9vmin) perspective(66vmin) rotateX(75deg) scale(1.25);
+    opacity: 1.5;
+    box-shadow: 0 0.9vmin 0.5vmin 0.2vmin #3a008e78;
 }
