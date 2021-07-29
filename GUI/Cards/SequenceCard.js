@@ -67,7 +67,9 @@ class SequenceCard extends Card {
      */
     async receiveDroppedCard(card){
         console.log("receiving card");
-        new InterpolationCard(card.noteSequence, this.noteSequence, 16, "Interpolated");
+        let interpCard = new InterpolationCard(card.noteSequence,
+                                               this.noteSequence, 16, "Interpolated");
+        PLAYER_HAND.addCards(interpCard);
     }
 
     /**
