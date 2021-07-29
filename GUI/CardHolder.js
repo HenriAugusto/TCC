@@ -10,7 +10,8 @@ class CardHolder {
 
     /**
      * Constructs a CardHolder object.
-     * @param {Element} element - the element that is going to be used to display the cards
+     * @param {Element} element - the element that is going to be used to display
+     * the cards
      */
     constructor(element){
         this.div = element;
@@ -18,12 +19,16 @@ class CardHolder {
     }
 
     /**
-     * Add a card to the CardHolder.
-     * @param {Card} card
+     * Adds or more Cards to the CardHolder
+     * @param {Card|Card[]} c - A single Card or an array of Cards to be added.
+     * @returns {number} - The resulting number of cards in the CardHolder.
      */
-    addCard(card){
-        this.cards.push(card);
-        this.div.appendChild(card.cardDiv);
+    addCards(c){
+        if(!Array.isArray(c)) c = [c];
+        c.forEach( card => {
+            this.div.appendChild(card.cardDiv);
+        });
+        return this.cards.push(...c);
     }
 
     /**

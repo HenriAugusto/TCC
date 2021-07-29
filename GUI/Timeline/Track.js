@@ -195,7 +195,7 @@ class Track {
         canvas.setAttribute("card", card.index);
 
         canvas.addEventListener("click", () => {
-            PLAYER_HAND.addCard(card);
+            PLAYER_HAND.addCards(card);
             this.removeCardInPosition(finalPos.left);
         });
         PLAYER_HAND.removeCard(card);
