@@ -10,6 +10,7 @@ class Deck {
      */
     cards = [];
     div;
+    drawCardEventListener;
 
     /**
      * Constructs an Deck, optionally initializing it's cards
@@ -19,6 +20,8 @@ class Deck {
         if(cards){
             this.addCardsToTop(cards);
         }
+        this.drawCardEventListener = this.drawCardsToPlayersHand.bind(this);
+        if(this.cards.length) this.enable();
     }
 
     addDeckIcon(element){
@@ -31,7 +34,7 @@ class Deck {
             this.div.append(card);
         }
         element.append(this.div);
-        this.div.addEventListener("click", this.drawCardsToPlayersHand.bind(this) );
+        this.div.addEventListener("click", this.drawCardEventListener );
     }
 
     /**
@@ -143,12 +146,14 @@ class Deck {
      */
     enable(){
         this.div.classList.remove("outOfCards");
+        this.div.addEventListener("click", this.drawCardEventListener );
     }
 
     /**
-     * Signals to the user the deck is empty
+     * Signals to the user the deck is empty.
      */
     disable(){
         this.div.classList.add("outOfCards");
+        this.div.removeEventListener("click", this.drawCardEventListener );
     }
 }
