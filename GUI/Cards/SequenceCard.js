@@ -45,6 +45,10 @@ class SequenceCard extends Card {
     setNoteSequence(seq){
         this.noteSequence = seq;
         this.visualizer = new mm.PianoRollCanvasVisualizer(seq, this.visualizerCanvas)
+        /* remove element style width and height that are set by PianoRollCanvasVisualizer
+           so our CSS can be applied */
+        this.visualizerCanvas.style.removeProperty("width");
+        this.visualizerCanvas.style.removeProperty("height");
         this.resizeVisualizerCanvas();
     }
 
@@ -70,6 +74,9 @@ class SequenceCard extends Card {
      * Resize the card's {@link PianoRollCanvasVisualizer} so it better fits its size.
      */
     resizeVisualizerCanvas(){
+        if(true){
+            return;
+        }
         let boundingRect = this.visualizerCanvas.getBoundingClientRect();
         let targetWidth = 160;
         let proportion = targetWidth/boundingRect.width;
