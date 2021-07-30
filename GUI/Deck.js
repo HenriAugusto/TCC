@@ -20,8 +20,7 @@ class Deck {
         if(cards){
             this.addCardsToTop(cards);
         }
-        this.drawCardEventListener = this.drawCardsToPlayersHand.bind(this);
-        if(this.cards.length) this.enable();
+        this.drawCardEventListener = this.drawCardsToPlayersHand.bind(this);       
     }
 
     addDeckIcon(element){
@@ -35,6 +34,11 @@ class Deck {
         }
         element.append(this.div);
         this.div.addEventListener("click", this.drawCardEventListener );
+        if(this.cards.length){
+            this.enable();
+        } else {
+            this.disable();
+        }
     }
 
     /**
