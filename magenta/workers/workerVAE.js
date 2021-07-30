@@ -128,7 +128,7 @@ async function sampleRequest(e){
     }
     await waitModelInitialization(model);
     let data = e.data;
-    sequences = await model.sample(1, data.temperature, data.controlArgs,
+    sequences = await model.sample(e.data.numSamples, data.temperature, data.controlArgs,
                                    data.stepsPerQuarter, data.qpm );
     e.ports[0].postMessage({
         type: "sampleReply",
