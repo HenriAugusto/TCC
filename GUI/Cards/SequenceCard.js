@@ -43,8 +43,8 @@ class SequenceCard extends Card {
      * @param {INoteSequence} seq - The new {@link INoteSequence} to be contained in the card.
      */
     setNoteSequence(seq){
-        this.noteSequence = seq;
-        this.visualizer = new mm.PianoRollCanvasVisualizer(seq, this.visualizerCanvas)
+        this.noteSequence = mm.sequences.clone(seq);
+        this.visualizer = new mm.PianoRollCanvasVisualizer(this.noteSequence, this.visualizerCanvas)
         /* remove element style width and height that are set by PianoRollCanvasVisualizer
            so our CSS can be applied */
         this.visualizerCanvas.style.removeProperty("width");
