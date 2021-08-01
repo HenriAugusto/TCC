@@ -5,29 +5,7 @@
     <link rel="stylesheet" href="style.css">
     <link rel="icon" href="favicon.png" type="image/png">
     <meta charset="UTF-8">
-</head>
 
-<body onload='initialize()'>
-
-	<div id="timeline"></div>
-
-	<div class="slidecontainer">
-		<input id="temperatureSliderVAE" type="range" min="0.5" max="1.5" value="1" step="0.05" class="slider">
-		<label>VAE Temperature: </label>
-		<span id="temperatureDisplayVAE"></span>	
-	</div>
-
-	<div class="slidecontainer">
-		<input id="temperatureSliderRNN" type="range" min="0.5" max="1.5" value="1" step="0.05" class="slider">
-		<label>RNN Temperature: </label>
-		<span id="temperatureDisplayRNN"></span>	
-	</div>
-
-	<button onclick='MAIN_TIMELINE.play()'>PLAY</button>
-	<button onclick='Playback.stop()'>STOP</button>
-
-	<div id="cardHolder" class="cardHolder"></div>
-	
 	<!-- Libs -->
 	<!-- <script src="https://cdn.jsdelivr.net/npm/@tonaljs/tonal/browser/tonal.min.js" defer></script> -->
 	<script src="https://cdn.jsdelivr.net/npm/@magenta/music@1.22.1/dist/magentamusic.min.js" defer></script>
@@ -56,7 +34,28 @@
 	<script src='magenta/VAE.js' defer></script>
 	<script src='magenta/VAE_MidiMe.js' defer></script>
 	<script src='core/core.js' defer></script>
-	
+</head>
+
+<body onload='initialize()'>
+
+	<div id="timeline"></div>
+
+	<div class="slidecontainer">
+		<input id="temperatureSliderVAE" type="range" min="0.5" max="1.5" value="1" step="0.05" class="slider">
+		<label>VAE Temperature: </label>
+		<span id="temperatureDisplayVAE"></span>
+	</div>
+
+	<div class="slidecontainer">
+		<input id="temperatureSliderRNN" type="range" min="0.5" max="1.5" value="1" step="0.05" class="slider">
+		<label>RNN Temperature: </label>
+		<span id="temperatureDisplayRNN"></span>
+	</div>
+
+	<button onclick='MAIN_TIMELINE.play()'>PLAY</button>
+	<button onclick='Playback.stop()'>STOP</button>
+
+	<div id="cardHolder" class="cardHolder"></div>
 
 </body>
 
