@@ -38,8 +38,33 @@
         return RNN.worker;
     }
 
-    static initializeWorker(){
-        console.log("initializing workerRNN.js");
-        RNN.worker = new Worker("magenta/workers/workerRNN.js");
-    }
+    /**
+     * Initialize the RNN worker with a default set of models
+     * @param {boolean} chain - Initialize models one at a time, in sequence
+     * @returns {Promise<Object>} - A promise that resolves when the models are initialized.
+     */
+    static initializeWorker(chain=false){
+        return new Promise((resolve, reject) => {
+
+            RNN.worker = new Worker("magenta/workers/workerRNN.js");
+
+            /* The values in the models array must match
+                 the ones in modelNamesMap as declared in workerRNN.js */
+            let ch = new MessageChannel();
+            RNN.worker.postMessage({
+                msg: "initialize",
+                models: ["basic_rnn",
+                        "melody_rnn",
+                        "drums_rnn",
+                        "melody_rnn_chord_pitches_improv"],
+                chain: chain
+            }, [ch.port2]);
+
+            ch.port1.onmessage = (event) => {
+                resolve(event.data);
+            };
+
+        });
+
+    };
 }

@@ -1,33 +1,55 @@
+var beingInitialized = new Map();
+
 /**
- * Wait for the model's initialization.
+ * This function can be used to initialize a model
+ * or wait for it to be initialized in case it is
+ * being initialized already.
  *
- * Since we initialize all models on startup it
- * is better to wait for the initialization.
- * If you try to use the model while it is initialized
- * it gets initialized more than once.
- * @param {MusicVAE|MusicRNN} model
- * @returns {Promise<void>} promise
+ * @async
+ * @param {MusicVAE|MusicVAE[]|MusicRNN|MusicRNN[]} m - A single model or an array of
+ * models to be initialized.
+ * @returns {Promise<void[]>} A promise resolved when all of the models are initialized.
  */
- async function waitModelInitialization(model){
-    console.log("waiting model initialization: "+model.checkpointURL.match(/\w+$/) );
-    return new Promise( (resolve, reject) => {
-        let loop = setInterval( () => {
-            // MusicVAE, MusicRNN
-            if( typeof model.isInitialized === 'function'){
-                if( !model.isInitialized() ){
-                } else {
-                    resolve();
-                    clearInterval(loop);
-                }
-            // MidiMe doesn't have isInitialized()...
-            } else {
-                if( !model.initialized ){
-                    console.log("waiting model initialization");
-                } else {
-                    resolve();
-                    clearInterval(loop);
-                }
-            }
-        }, 250)
+ async function initOrWaitModels(m){
+    if(!Array.isArray(m)) m = [m];
+    let initPromises = [];
+    let initModelStyle = `font-weight:bold;color:lawngreen;
+                            background-color:black; padding:0.5em`;
+    let initializedStyle = "color: #ff3aff;font-weight: bolder";
+
+    m.forEach( model => {
+        let modelName = model.checkpointURL.match(/\w+$/);
+        if ( model.isInitialized() ){
+            initPromises.push( Promise.resolve() );
+            return;
+        }
+        if( beingInitialized.has(model)){
+            console.log("%cwaiting model initialization: "+modelName);
+        } else {
+            console.log("%cinitializing model: "+modelName, initModelStyle);
+            beingInitialized.set(model, model.initialize());
+            beingInitialized.get(model).then(() => {
+                beingInitialized.delete(model);
+                console.log("Model initialized: %c"+modelName, initializedStyle);
+            });
+        }
+        initPromises.push( beingInitialized.get(model) );
+    });
+    return Promise.all(initPromises);
+}
+
+/**
+ * Initialize models sequentially (one at a time).
+ *
+ * @async
+ * @param {MusicVAE[]|MusicRNN[]} models
+ * @returns {Promise<void>} a promise resolved when the final model is initialized
+ */
+async function chainInitialization(models){
+    return new Promise(async (resolve, reject) => {
+        for(let i=0; i<models.length; i++){
+            await initOrWaitModels(models[i]);
+        }
+        resolve();
     });
 }

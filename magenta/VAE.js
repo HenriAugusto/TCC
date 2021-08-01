@@ -132,8 +132,32 @@ class VAE {
         return VAE.worker;
     }
 
-    static initializeWorker(){
-        console.log("initializing workerVAE.js");
-        VAE.worker = new Worker("magenta/workers/workerVAE.js");
+    /**
+     * Initialize the VAE worker with a default set of models
+     * @param {boolean} chain - Initialize models one at a time, in sequence
+     * @returns {Promise<Object>} - A promise that resolves when the models are initialized.
+     */
+    static initializeWorker(chain=false){
+        return new Promise( async (resolve, reject) => {
+
+            VAE.worker = new Worker("magenta/workers/workerVAE.js");
+
+            let ch = new MessageChannel();
+            /* The values in the models array must match
+             the ones in modelNamesMap as declared in workerVAE.js */
+            VAE.worker.postMessage({
+                msg: "initialize",
+                models: ["music_vae_mel_4bar_q2",
+                        "music_vae_2bar_small",
+                        "drums_4bar_med_lokl_q2",
+                        "drums_4bar_med_q2"],
+                chain: chain
+            }, [ch.port2]);
+
+            ch.port1.onmessage = (event) => {
+                resolve(event.data);
+            };
+        });
+
     }
 }
