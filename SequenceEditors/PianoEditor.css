@@ -1,0 +1,123 @@
+.pianoEditorBkg {
+    width: 100vw;
+    height: 100vh;
+    background-color: black;
+    opacity: 0.8;
+    position: fixed;
+    z-index: 1;
+}
+
+.editorWindow {
+    width: 80vw;
+    height: 80vh;
+    background-color: magenta;
+    position: fixed;
+    margin: 10vh 10vw;
+    overflow: auto;
+    z-index: 2;
+}
+
+/* --- Note Lane --- */
+
+.noteLane {
+	width: 100vw;
+	height: 3vh;
+	border-color: magenta;
+	border-width: 1px;
+	position: relative;
+	display: flex;
+}
+
+.laneBkg {
+	background-color: green;
+	height: 100%;
+	width: 100%;
+	position: absolute;
+	border: solid black 1px;
+}
+
+.C.laneBkg, .D.laneBkg, .E.laneBkg, .F.laneBkg, .G.laneBkg, .A.laneBkg, .B.laneBkg {
+	background-color: #aaaaaa;
+}
+
+.Db.laneBkg, .Eb.laneBkg, .Gb.laneBkg, .Ab.laneBkg, .Bb.laneBkg {
+	background-color: #666666;
+}
+
+/* --- Piano Keys --- */
+
+.pianoKey {
+	width: 10vw;
+	height: 100%;
+	box-sizing: border-box;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 1%;
+    font-family: "Lucida Handwriting", cursive, serif;
+}
+
+.whiteKey {
+	border: black solid 1px;
+	background-color: white;
+	z-index: 2;
+}
+
+.blackKey {
+	background-color: black;
+	width: 6vw;
+	z-index: 3;
+}
+
+.E.pianoKey, .B.pianoKey {
+	position: relative;
+	height: 150%;
+}
+
+.D.pianoKey, .G.pianoKey, .A.pianoKey {
+	position: relative;
+	height: 200%;
+	top: -50%;
+}
+
+.C.pianoKey, .F.pianoKey {
+	position: relative;
+	height: 150%;
+	top: -50%;
+}
+
+/* Piano Keys highlighting */
+
+.whiteKey.highlighted {
+	border: black solid 3px;
+	background-color: #8b0ddf;
+}
+
+.blackKey.highlighted {
+	border: black solid 3px;
+	background-color: #8b0ddf;
+}
+
+/* Adjustements for when the key is the lowest one on the piano rolll */
+
+.pianoKey.bottomKey.D, .pianoKey.bottomKey.G, .pianoKey.bottomKey.A, .pianoKey.bottomKey.C, .pianoKey.bottomKey.F {
+	height: 150%;
+	top: -50%;
+}
+
+.pianoKey.bottomKey.E, .pianoKey.bottomKey.B {
+	height: 100%;
+	top: 0;
+}
+
+/* Adjustements for when the key is the highest one on the piano rolll */
+
+.pianoKey.topKey.C, .pianoKey.topKey.F {
+	height: 100%;
+	top: 0;
+}
+
+.pianoKey.topKey.D, .pianoKey.topKey.G, .pianoKey.topKey.A {
+	height: 150%;
+	top: 0;
+}

@@ -1,3 +1,5 @@
+import PianoEditor from '../SequenceEditors/PianoEditor.js'
+
 async function initialize(){
     initGUI();
 
@@ -30,3 +32,5 @@ async function initialize(){
 
     //VAE_MidiMe.initializeWorker();
 }
+
+window.addEventListener("load", initialize);
