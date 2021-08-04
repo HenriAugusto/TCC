@@ -1,3 +1,5 @@
+/* --- Editor UI --- */
+
 .pianoEditorBkg {
     width: 100vw;
     height: 100vh;
@@ -7,7 +9,7 @@
     z-index: 1;
 }
 
-.editorWindow {
+.pianoEditorWindow {
     width: 80vw;
     height: 80vh;
     background-color: magenta;
@@ -15,6 +17,23 @@
     margin: 10vh 10vw;
     overflow: auto;
     z-index: 2;
+}
+
+.pianoEditorMenu {
+    position: sticky;
+    top: 0px;
+    z-index: 4;
+    background: #251a2b;
+    padding: 0.5vmin 1vmin;
+}
+
+.pianoEditorBtn {
+    padding: 0.5vmin;
+    color: white;
+    background-color: rgb(255, 71, 255);
+    margin: 0.33%;
+    font-weight: bold;
+    font-size: 1rem;
 }
 
 /* --- Note Lane --- */
@@ -33,6 +52,7 @@
 	height: 100%;
 	width: 100%;
 	position: absolute;
+	left: 10vw;
 	border: solid black 1px;
 }
 
@@ -47,8 +67,8 @@
 /* --- Piano Keys --- */
 
 .pianoKey {
-	width: 10vw;
-	height: 100%;
+    width: 10vw;
+    height: 100%;
 	box-sizing: border-box;
     display: flex;
     justify-content: flex-end;
@@ -58,7 +78,7 @@
 }
 
 .whiteKey {
-	border: black solid 1px;
+    border: black solid 1px;
 	background-color: white;
 	z-index: 2;
 }
@@ -67,6 +87,7 @@
 	background-color: black;
 	width: 6vw;
 	z-index: 3;
+    margin: 0 4vw 0 0;
 }
 
 .E.pianoKey, .B.pianoKey {
@@ -86,16 +107,23 @@
 	top: -50%;
 }
 
+/* Prevents selection of the "C#" text on the key */
+.pianoKey.whiteKey.C {
+    user-select: none;
+}
+
 /* Piano Keys highlighting */
 
 .whiteKey.highlighted {
 	border: black solid 3px;
 	background-color: #8b0ddf;
+    color: white;
 }
 
 .blackKey.highlighted {
 	border: black solid 3px;
 	background-color: #8b0ddf;
+    color: white;
 }
 
 /* Adjustements for when the key is the lowest one on the piano rolll */
@@ -120,4 +148,37 @@
 .pianoKey.topKey.D, .pianoKey.topKey.G, .pianoKey.topKey.A {
 	height: 150%;
 	top: 0;
+}
+
+/* --- Lane Step --- */
+
+.laneStepsContainer {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 10vw;
+    display: flex;
+}
+
+.laneStep {
+	user-select: none; /* prevents some weird dragging */
+}
+
+.laneStep.preview {
+    background-color: #d8148d;
+}
+
+.laneStep.note {
+    background-color: lawngreen;
+}
+
+/* --- Notes --- */
+
+.pianoEditorNote {
+	background-color: magenta;
+	height: 100%;
+	box-sizing: border-box;
+	border: solid 1px black;
+	position: relative; /* necessary for z-index: */
+	z-index: 1;
 }

@@ -17,6 +17,15 @@ async function initialize(){
         new DrumsGenerator(DRUM_SEQ_3, "Drum Generator 3")
     ] );
 
+    let editor = new PianoEditor();
+
+    let editedSeq = await editor.edit(MELODY_1);
+    let editedCard = new SequenceCard(editedSeq, "EDITED", "Melody");
+    PLAYER_HAND.addCards(editedCard);
+
+        editedSeq = await editor.edit(DRUM_SEQ_1);
+        editedCard = new SequenceCard(editedSeq, "EDITED 2", "Drums");
+    PLAYER_HAND.addCards(editedCard);
 
     /* The first models we are gonna need are the ones that
      * are capable of generating melodies. To speed up initialization
