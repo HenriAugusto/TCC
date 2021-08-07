@@ -30,6 +30,10 @@ import Note from "./Note.js";
             lane.classList.add(pitchClass);
         this.div = lane;
 
+        let keyStickyContainer = document.createElement("div");
+            keyStickyContainer.classList.add("pianoKeyStickyContainer");
+            keyStickyContainer.classList.add(WHITE_KEYS.includes(pitch % 12) ? "whiteKey" : "blackKey");
+
         let key = document.createElement("div");
             key.classList.add( "pianoKey" );
             key.classList.add( WHITE_KEYS.includes(pitch % 12) ? "whiteKey" : "blackKey" );
@@ -53,6 +57,8 @@ import Note from "./Note.js";
         if( pitch==pianoEditor.midiMin) key.classList.add("bottomKey");
         if( pitch==pianoEditor.midiMax) key.classList.add("topKey");
 
+        keyStickyContainer.append(key);
+
         let laneBkg = document.createElement("div");
             laneBkg.classList.add("laneBkg");
             laneBkg.classList.add(pitchClass);
@@ -66,7 +72,7 @@ import Note from "./Note.js";
                 key.classList.remove("highlighted");
             });
 
-        lane.append(key, laneBkg, laneStepsContainer);
+        lane.append(keyStickyContainer, laneBkg, laneStepsContainer);
         pianoEditor.div.querySelector(".pianoRollWindow").prepend(lane);
 
         for(let i=0; i<pianoEditor.numSteps; i++){
