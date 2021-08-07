@@ -26,6 +26,14 @@ import Note from "./Note.js";
         this.addEventHandlers(editor, lane);
     }
 
+    /**
+     * Add all the event handlers related to that LaneStep.
+     * The events will be redirected to the {@link PianoEditor}.
+     * Those events are going to be used to determine where to
+     * place {@link Note}s.
+     * @param {PianoEditor} editor
+     * @param {Lane} lane
+     */
     addEventHandlers(editor, lane){
         this.div.addEventListener("mousedown", (ev) => {
             if(ev.which===1){

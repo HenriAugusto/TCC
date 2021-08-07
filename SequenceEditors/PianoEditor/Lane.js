@@ -1,5 +1,5 @@
-import LaneStep from "./LaneStep.js"
-import Note from "./Note.js"
+import LaneStep from "./LaneStep.js";
+import Note from "./Note.js";
 
 /**
  * Each lane is a row to input notes of a single pitch
@@ -8,19 +8,17 @@ import Note from "./Note.js"
     div;
     pitch;
     name;
-    /**
-     * Two-dimensional array.Contains arrays of type `[noteStart, noteEnd]`
-     * Observe that `noteEnd` is exclusive. For example:
-     * A note that right on the beggining of a sequence that occupies only
-     * a single step `[0, 1]`, not `[0, 0]`.
-     * @type {number[][]}
-     */
+    /** @type {Note[]} */
     notes = [];
     /** @type {LaneStep[]} */
     steps = [];
-    /* Notice we don't store an editor reference to save memory.
-       Instead we pass it down from PianoEditor to LaneStep */
 
+    /**
+     * Constructs a Lane
+     * @param {PianoEditor} pianoEditor
+     * @param {number} pitch - a pitch number
+     * @param {string} name - The name of the note (ex: "C4")
+     */
     constructor(pianoEditor, pitch, name){
         const WHITE_KEYS = [0,2,4,5,7,9,11];
         this.pitch = pitch;
@@ -76,6 +74,10 @@ import Note from "./Note.js"
         this.steps[start].div.append(noteDiv);
     }
 
+    /**
+     * Removes a {@link Note} from the lane.
+     * @param {Note} note
+     */
     removeNote(note){
         this.notes = this.notes.filter( el => el!=note );
         note.div.remove();

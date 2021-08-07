@@ -1,12 +1,27 @@
 import Lane from "./Lane.js";
 
+/**
+ * A class representing a single Note.
+ * Note's end position is exclusive. For ex:
+ * A note at the beggining of a bar which lasts
+ * for one step has `start=0` and `end=1`.
+ */
 export default class Note {
     div;
     pitch;
     start;
     end;
+    velocity;
     isDrum;
 
+    /**
+     * Constructs a Note
+     * @param {number} pitch
+     * @param {number} start
+     * @param {number} end
+     * @param {boolean} isDrum
+     * @param {number} velocity
+     */
     constructor(pitch, start, end, isDrum, velocity=100){
         this.pitch = pitch;
         this.start = start;
@@ -15,6 +30,12 @@ export default class Note {
         this.velocity = velocity;
     }
 
+    /**
+     * Create and returns the <div> that will be used
+     * display the Note.
+     * @param {Lane} lane - the lane which will contain the Note
+     * @returns {Element}
+     */
     createDiv(lane){
         let start = this.start;
         let end = this.end;
