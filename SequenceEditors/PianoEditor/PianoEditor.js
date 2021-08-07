@@ -1,3 +1,6 @@
+import Lane from "./Lane.js";
+import Note from "./Note.js";
+
 const WHITE_KEYS = [0,2,4,5,7,9,11];
 var CSS_INITIALIZED = false;
 
@@ -188,172 +191,11 @@ export default class PianoEditor {
     }
 }
 
-/**
- * Each lane is a row to input notes of a single pitch
- */
-class Lane {
-    div;
-    pitch;
-    name;
-    /**
-     * Two-dimensional array.Contains arrays of type `[noteStart, noteEnd]`
-     * Observe that `noteEnd` is exclusive. For example:
-     * A note that right on the beggining of a sequence that occupies only
-     * a single step `[0, 1]`, not `[0, 0]`.
-     * @type {number[][]}
-     */
-    notes = [];
-    /** @type {LaneStep[]} */
-    steps = [];
-    /* Notice we don't store an editor reference to save memory.
-       Instead we pass it down from PianoEditor to LaneStep */
-
-    constructor(pianoEditor, pitch, name){
-        const WHITE_KEYS = [0,2,4,5,7,9,11];
-        this.pitch = pitch;
-        this.name = name;
-
-        let pitchClass = Tonal.Midi.midiToNoteName(pitch, { pitchClass: true });
-        let lane = document.createElement("div");
-            lane.classList.add("noteLane");
-            lane.classList.add(pitchClass);
-        this.div = lane;
-
-        let key = document.createElement("div");
-            key.classList.add( "pianoKey" );
-            key.classList.add( WHITE_KEYS.includes(pitch % 12) ? "whiteKey" : "blackKey" );
-            key.classList.add(pitchClass);
-            if( name ) key.innerText = name;
-
-        if( pitch==pianoEditor.midiMin) key.classList.add("bottomKey");
-        if( pitch==pianoEditor.midiMax) key.classList.add("topKey");
-
-        let laneBkg = document.createElement("div");
-            laneBkg.classList.add("laneBkg");
-            laneBkg.classList.add(pitchClass);
-
-            let laneStepsContainer = document.createElement("div");
-            laneStepsContainer.classList.add("laneStepsContainer");
-            laneStepsContainer.addEventListener("mouseover", () => {
-                key.classList.add("highlighted");
-            });
-            laneStepsContainer.addEventListener("mouseleave", () => {
-                key.classList.remove("highlighted");
-            });
-
-        lane.append(key, laneBkg, laneStepsContainer);
-        pianoEditor.div.querySelector(".pianoRollWindow").prepend(lane);
-
-        for(let i=0; i<pianoEditor.numSteps; i++){
-            let step = new LaneStep(this, i, pianoEditor);
-            this.steps.push(step);
-        }
-    }
-
-    /**
-     * Adds a note to the given lane.
-     * (There is no pitch argument since the lane determines the pitch)
-     * @param {number} start
-     * @param {number} end
-     */
-    addNote(start, end, isDrum, velocity){
-        let note = new Note(this.pitch, start, end, isDrum, velocity);
-        let noteDiv = note.createDiv(this);
-        this.notes.push(note);
-        this.steps[start].div.append(noteDiv);
-    }
-
-    removeNote(note){
-        this.notes = this.notes.filter( el => el!=note );
-        note.div.remove();
-    }
-}
-
-/**
- * A single step inside a Lane.
- */
-class LaneStep {
-    div;
-    step;
-
-    constructor(lane, step, editor){
-        this.step = step;
-        this.div = document.createElement("div");
-        this.div.classList.add("laneStep");
-        let w = `${100/editor.numSteps}%`;
-        this.div.style.width = w;
-
-        /* we must add a separator because the notes are going to get a
-           x*100% width. So we must not use borders on our laneStep divs
-           because the % unit is always based on the content box's width */
-        let separator = document.createElement("div");
-            separator.style.width = "0";
-            separator.style.outline = "black solid 1px";
-
-        lane.div.querySelector(".laneStepsContainer").append(this.div, separator);
-        this.addEventHandlers(editor, lane);
-    }
-
-    addEventHandlers(editor, lane){
-        this.div.addEventListener("mousedown", (ev) => {
-            if(ev.which===1){
-                editor.mouseDownOnStep(ev, this, lane);
-            }
-        });
-        this.div.addEventListener("mouseover", (ev) => {
-            if(ev.which===1){
-                editor.mouseOverStep(ev, this, lane);
-            }
-        });
-        this.div.addEventListener("mouseup", (ev) => {
-            if(ev.which===1){
-                editor.mouseUpOnStep(ev, this, lane);
-            }
-        });
-    }
-}
-
-class Note {
-    div;
-    pitch;
-    start;
-    end;
-    isDrum;
-
-    constructor(pitch, start, end, isDrum, velocity=100){
-        this.pitch = pitch;
-        this.start = start;
-        this.end = end;
-        this.isDrum = isDrum;
-        this.velocity = velocity;
-    }
-
-    createDiv(lane){
-        let start = this.start;
-        let end = this.end;
-        let diff = end-start;
-
-        let length = (end-start)*100;
-
-        let noteDiv = document.createElement("div");
-            noteDiv.classList.add("pianoEditorNote");
-            noteDiv.style.width = length+"%";
-        let deleteNoteFunc = lane.removeNote.bind(lane, this);
-            noteDiv.addEventListener("mousedown", (ev) => {
-                deleteNoteFunc.call();
-                ev.preventDefault();
-                ev.stopPropagation();
-            });
-        this.div = noteDiv;
-        return noteDiv;
-    }
-}
-
 function initializeCSS(){
     CSS_INITIALIZED = true;
     let fileref=document.createElement("link");
         fileref.setAttribute("rel", "stylesheet");
         fileref.setAttribute("type", "text/css");
-        fileref.setAttribute("href", "SequenceEditors/PianoEditor.css");
+        fileref.setAttribute("href", "SequenceEditors/PianoEditor/PianoEditor.css");
     document.getElementsByTagName("head")[0].appendChild(fileref);
 }

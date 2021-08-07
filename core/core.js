@@ -1,4 +1,4 @@
-import PianoEditor from '../SequenceEditors/PianoEditor.js'
+import PianoEditor from '../SequenceEditors/PianoEditor/PianoEditor.js'
 
 async function initialize(){
     initGUI();
