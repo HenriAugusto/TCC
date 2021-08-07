@@ -35,6 +35,20 @@ import Note from "./Note.js";
             key.classList.add( WHITE_KEYS.includes(pitch % 12) ? "whiteKey" : "blackKey" );
             key.classList.add(pitchClass);
             if( name ) key.innerText = name;
+            key.addEventListener("mousedown", (ev) => {
+                key.classList.add("playing");
+                Playback.play({
+                    notes: [
+                        {pitch: this.pitch, startTime: 0, endTime: 2}
+                    ],
+                    totalTime: 2
+                });
+                let eh = () => {
+                    Playback.stop();
+                    key.classList.remove("playing");
+                }
+                document.addEventListener("mouseup", eh, {once: true});
+            });
 
         if( pitch==pianoEditor.midiMin) key.classList.add("bottomKey");
         if( pitch==pianoEditor.midiMax) key.classList.add("topKey");

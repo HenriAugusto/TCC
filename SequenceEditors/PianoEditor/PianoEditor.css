@@ -75,6 +75,7 @@
     align-items: center;
     padding: 1%;
     font-family: "Lucida Handwriting", cursive, serif;
+	user-select: none;
 }
 
 .whiteKey {
@@ -123,6 +124,18 @@
 .blackKey.highlighted {
 	border: black solid 3px;
 	background-color: #8b0ddf;
+    color: white;
+}
+
+.whiteKey.playing {
+	border: black solid 3px;
+	background-color: #0ddf4c;
+    color: white;
+}
+
+.blackKey.playing {
+	border: black solid 3px;
+	background-color: #0ddf4c;
     color: white;
 }
 
