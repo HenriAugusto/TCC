@@ -4,6 +4,7 @@ async function initialize(){
     initGUI();
 
     PLAYER_HAND.addCards( [
+        new EditorCard(),
         new SequenceCard(BEETH_9TH ,"Beethoven", "Melody"),
         new SequenceCard(DRUM_SEQ_1 ,"Drums", "Drums"),
         new MelodyGenerator(MELODY_1, "Melody Generator"),
@@ -17,13 +18,13 @@ async function initialize(){
         new DrumsGenerator(DRUM_SEQ_3, "Drum Generator 3")
     ] );
 
-    let editor = new PianoEditor();
+    EditorCard.pianoEditor = new PianoEditor();
 
-    let editedSeq = await editor.edit(MELODY_1);
+    let editedSeq = await EditorCard.pianoEditor.edit(MELODY_1);
     let editedCard = new SequenceCard(editedSeq, "EDITED", "Melody");
     PLAYER_HAND.addCards(editedCard);
 
-        editedSeq = await editor.edit(DRUM_SEQ_1);
+        editedSeq = await EditorCard.pianoEditor.edit(DRUM_SEQ_1);
         editedCard = new SequenceCard(editedSeq, "EDITED 2", "Drums");
     PLAYER_HAND.addCards(editedCard);
 

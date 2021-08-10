@@ -67,9 +67,16 @@ class SequenceCard extends Card {
      */
     async receiveDroppedCard(card){
         console.log("receiving card");
-        let interpCard = new InterpolationCard(card.noteSequence,
-                                               this.noteSequence, 16, "Interpolated");
-        PLAYER_HAND.addCards(interpCard);
+        if(card instanceof SequenceCard){
+            let interpCard = new InterpolationCard(card.noteSequence,
+                this.noteSequence, 16, "Interpolated");
+            PLAYER_HAND.addCards(interpCard);
+        } else if(card instanceof EditorCard){
+            let seq = await EditorCard.pianoEditor.edit(this.noteSequence);
+            console.log("RECEIVED SEQUENCE FROM EDITOR PROMISE");
+            console.log(seq);
+            this.setNoteSequence(seq);
+        }
     }
 
     /**
