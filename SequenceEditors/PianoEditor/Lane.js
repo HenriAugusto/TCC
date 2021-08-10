@@ -102,4 +102,11 @@ import Note from "./Note.js";
         this.notes = this.notes.filter( el => el!=note );
         note.div.remove();
     }
+
+    /**
+     * Delete all notes from the lane.
+     */
+    clear(){
+        this.notes.forEach( note => this.removeNote(note) );
+    }
 }

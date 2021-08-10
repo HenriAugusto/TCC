@@ -85,6 +85,7 @@ export default class PianoEditor {
     }
 
     loadSequence(seq){
+        this.clear();
         this.resize(seq.totalQuantizedSteps);
         this.isDrumSequence = SequenceUtils.isDrumSequence(seq);
         seq.notes.forEach( note => {
@@ -99,6 +100,13 @@ export default class PianoEditor {
             return first.start >= note.start ? note : first;
         });
         this.scrollToNote(firstNote);
+    }
+
+    /**
+     * Delete all notes from the editor.
+     */
+    clear(){
+        this.lanes.forEach( lane => lane.clear() );
     }
 
     buildNoteSequence(){
