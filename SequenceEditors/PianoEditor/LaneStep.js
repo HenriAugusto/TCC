@@ -19,8 +19,8 @@ import Note from "./Note.js";
            x*100% width. So we must not use borders on our laneStep divs
            because the % unit is always based on the content box's width */
         let separator = document.createElement("div");
-            separator.style.width = "0";
-            separator.style.outline = "black solid 1px";
+            separator.classList.add("laneStepSeparator");
+            separator.classList.add( "mod"+step % 4);
 
         lane.div.querySelector(".laneStepsContainer").append(this.div, separator);
         this.addEventHandlers(editor, lane);
