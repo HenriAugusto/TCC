@@ -42,9 +42,12 @@ import Note from "./Note.js";
             key.addEventListener("mousedown", (ev) => {
                 key.classList.add("playing");
                 Playback.play({
-                    notes: [
-                        {pitch: this.pitch, startTime: 0, endTime: 2}
-                    ],
+                    notes: [{
+                        pitch: this.pitch,
+                        startTime: 0,
+                        endTime: 2,
+                        isDrum: pianoEditor.isDrumSequence
+                    }],
                     totalTime: 2
                 });
                 let eh = () => {
