@@ -67,19 +67,39 @@ export default class PianoEditor {
         let applyBtn = document.createElement("button");
             applyBtn.classList.add("pianoEditorBtn", "applyBtn");
             applyBtn.innerText = "Apply";
-        editorMenu.append(playBtn, applyBtn);
+        let cancelBtn = document.createElement("button");
+            cancelBtn.classList.add("pianoEditorBtn", "cancelBtn");
+            cancelBtn.innerText = "Cancel";
+        editorMenu.append(cancelBtn, applyBtn, playBtn);
         return editorMenu;
     }
 
+    /**
+     * Edits a note sequence
+     * @param {INoteSequence} seq
+     * @returns {Promise<INoteSequence>|Promise<void>} - If the user
+     * applies the changes the Promise is resolved with the note sequence.
+     * If the user cancels, a promise is resolved without any argument.
+     */
     edit(seq=undefined){
         this.originalSequence = mm.sequences.clone(seq);
         this.show();
         if(seq) this.loadSequence(seq);
+        // remove all listeners
         let applyBtn = this.div.querySelector(".applyBtn");
+        let applyBtnClone = applyBtn.cloneNode(true);
+            applyBtn.replaceWith(applyBtnClone);
+            applyBtn = applyBtnClone;
+
+        let cancelBtn = this.div.querySelector(".cancelBtn");
         return new Promise( (resolve, reject) => {
             applyBtn.addEventListener("click", () => {
                 this.hide();
                 resolve( this.buildNoteSequence() );
+            });
+            cancelBtn.addEventListener("click", () => {
+                this.hide();
+                reject("User canceled");
             });
         });
     }
