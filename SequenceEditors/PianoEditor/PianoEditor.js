@@ -117,7 +117,7 @@ export default class PianoEditor {
         this.isDrumSequence = SequenceUtils.isDrumSequence(seq);
         seq.notes.forEach( note => {
             let lane = this.lanes.filter( l => l.pitch == note.pitch)[0];
-            lane.addNote(note.quantizedStartStep, note.quantizedEndStep, note.isDrum);
+            lane.addNote(this, note.quantizedStartStep, note.quantizedEndStep, note.isDrum);
         });
         let allNotes = [];
         this.lanes.forEach( lane => {
@@ -181,7 +181,7 @@ export default class PianoEditor {
         this.resetNotePreview();
         let stepStart = Math.min(this.mouseDownStepIndex, laneStep.step)
         let stepEnd = Math.max(this.mouseDownStepIndex, laneStep.step)
-        lane.addNote(stepStart, stepEnd+1, this.isDrumSequence);
+        lane.addNote(this, stepStart, stepEnd+1, this.isDrumSequence);
     }
 
     mouseOverStep(ev, laneStep, lane){
@@ -215,6 +215,9 @@ export default class PianoEditor {
             case "Space":
                 this.play();
                 break;
+            case "Delete":
+                    this.deleteSelectedNotes();
+                    break;
             case "Escape":
                 this.div.querySelector(".cancelBtn").click();
                 break;
@@ -288,6 +291,19 @@ export default class PianoEditor {
     deselectAllNotes(){
         this.selectedNotes.forEach( note => note.div.classList.remove("selected") );
         this.selectedNotes = [];
+    }
+
+    /**
+     * Delete all the selected notes
+     */
+    deleteSelectedNotes(){
+        this.selectedNotes.forEach( (note) => {
+            this.lanes.forEach( (lane) => {
+                if( note.pitch == lane.pitch ){
+                    lane.removeNote(note);
+                }
+            });
+        });
     }
 }
 

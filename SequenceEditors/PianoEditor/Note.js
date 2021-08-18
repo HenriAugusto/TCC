@@ -36,7 +36,7 @@ export default class Note {
      * @param {Lane} lane - the lane which will contain the Note
      * @returns {Element}
      */
-    createDiv(lane){
+    createDiv(editor, lane){
         let start = this.start;
         let end = this.end;
         let diff = end-start;
@@ -48,7 +48,7 @@ export default class Note {
             noteDiv.style.width = length+"%";
         let deleteNoteFunc = lane.removeNote.bind(lane, this);
             noteDiv.addEventListener("mousedown", (ev) => {
-                deleteNoteFunc.call();
+                editor.clickOnNote(this, ev);
                 ev.preventDefault();
                 ev.stopPropagation();
             });

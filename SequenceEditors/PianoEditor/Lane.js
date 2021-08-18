@@ -90,9 +90,9 @@ import Note from "./Note.js";
      * @param {number} start
      * @param {number} end
      */
-    addNote(start, end, isDrum, velocity){
+    addNote(editor, start, end, isDrum, velocity){
         let note = new Note(this.pitch, start, end, isDrum, velocity);
-        let noteDiv = note.createDiv(this);
+        let noteDiv = note.createDiv(editor, this);
         this.notes.push(note);
         this.steps[start].div.append(noteDiv);
     }
