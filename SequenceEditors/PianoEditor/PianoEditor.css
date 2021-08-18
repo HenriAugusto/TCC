@@ -205,10 +205,6 @@
     background-color: #d8148d;
 }
 
-.laneStep.note {
-    background-color: lawngreen;
-}
-
 .laneStepSeparator {
 	width: 0;
 	outline: #2b2b2b solid 1px;
