@@ -87,8 +87,11 @@ import Note from "./Note.js";
     /**
      * Adds a note to the given lane.
      * (There is no pitch argument since the lane determines the pitch)
-     * @param {number} start
-     * @param {number} end
+     * @param {PianoEditor} editor - the piano editor containing the {@link Lane}
+     * @param {number} start - start step
+     * @param {number} end - end step
+     * @param {boolean} isDrum - if it is a drum note
+     * @param {number} velocity - note velocity (0 <= vel <= 127)
      */
     addNote(editor, start, end, isDrum, velocity){
         let note = new Note(this.pitch, start, end, isDrum, velocity);
