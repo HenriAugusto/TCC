@@ -66,13 +66,17 @@ export default class PianoEditor {
             playBtn.classList.add("pianoEditorBtn", "playBtn");
             playBtn.addEventListener("click", this.play.bind(this) );
             playBtn.innerText = "Play";
+        let stopBtn = document.createElement("button");
+            stopBtn.classList.add("pianoEditorBtn", "stopBtn");
+            stopBtn.addEventListener("click", Playback.stop );
+            stopBtn.innerText = "Stop";
         let applyBtn = document.createElement("button");
             applyBtn.classList.add("pianoEditorBtn", "applyBtn");
             applyBtn.innerText = "Apply";
         let cancelBtn = document.createElement("button");
             cancelBtn.classList.add("pianoEditorBtn", "cancelBtn");
             cancelBtn.innerText = "Cancel";
-        editorMenu.append(cancelBtn, applyBtn, playBtn);
+        editorMenu.append(cancelBtn, applyBtn, stopBtn, playBtn);
         return editorMenu;
     }
 

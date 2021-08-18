@@ -45,6 +45,10 @@
     background-color: rgb(235, 43, 43);
 }
 
+.pianoEditorBtn.stopBtn {
+    background-color: black;
+}
+
 /* --- Note Lane --- */
 
 .noteLane {
