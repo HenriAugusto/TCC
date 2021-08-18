@@ -228,3 +228,7 @@
 	position: relative; /* necessary for z-index: */
 	z-index: 1;
 }
+
+.pianoEditorNote.selected {
+	background-color: lawngreen;
+}

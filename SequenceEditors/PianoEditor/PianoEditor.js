@@ -21,6 +21,7 @@ export default class PianoEditor {
     originalSequence;
     isDrumSequence;
     keydownListener = this.keydown.bind(this);
+    selectedNotes = [];
 
     constructor(){
         if(!CSS_INITIALIZED){
@@ -250,6 +251,43 @@ export default class PianoEditor {
         this.numSteps = numSteps;
         this.lanes.forEach( lane => lane.div.remove() );
         this.createLanes();
+    }
+
+    /**
+     * Handles a click on a {@link Note}
+     * @param {Note} note - the clicked note
+     * @param {MouseEvent} ev - the mouse event object
+     */
+    clickOnNote(note, ev){
+        console.log(ev);
+        if(!ev.shiftKey) this.deselectAllNotes();
+        this.selectNote(note);
+    }
+
+    /**
+     * Selects the given note
+     * @param {Note} note
+     */
+    selectNote(note){
+        this.selectedNotes.push(note);
+        note.div.classList.add("selected");
+    }
+
+    /**
+     * Deselects the given note
+     * @param {Note} note
+     */
+    deselectNote(note){
+        this.selectedNotes = this.selectedNotes.filter( x => x != note);
+        note.div.classList.remove("selected");
+    }
+
+    /**
+     * Deselects all selected notes
+     */
+    deselectAllNotes(){
+        this.selectedNotes.forEach( note => note.div.classList.remove("selected") );
+        this.selectedNotes = [];
     }
 }
 
