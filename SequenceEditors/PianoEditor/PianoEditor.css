@@ -10,11 +10,11 @@
 }
 
 .pianoEditorWindow {
-    width: 80vw;
-    height: 80vh;
+    width: 92vw;
+    height: 92vh;
     background-color: magenta;
     position: fixed;
-    margin: 10vh 10vw;
+    margin: 4vh 4vw;
     overflow: auto;
     z-index: 2;
 }
