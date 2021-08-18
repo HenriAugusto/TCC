@@ -20,6 +20,7 @@ export default class PianoEditor {
     mouseOverStepIndex;
     originalSequence;
     isDrumSequence;
+    keydownListener = this.keydown.bind(this);
 
     constructor(){
         if(!CSS_INITIALIZED){
@@ -45,6 +46,7 @@ export default class PianoEditor {
         this.createLanes();
 
         document.querySelector("body").prepend(this.div);
+        this.addKeyboardListeners();
     }
 
     createLanes(){
@@ -154,10 +156,12 @@ export default class PianoEditor {
     }
 
     hide(){
+        this.removeKeyboardListeners();
         this.div.style.display = "none";
     }
 
     show(){
+        this.addKeyboardListeners();
         this.div.style.display = "";
     }
 
@@ -185,6 +189,32 @@ export default class PianoEditor {
 
         for(let i=this.mouseDownStepIndex; i!=laneStep.step+unitDiff ; i+=unitDiff ){
             lane.steps[i].div.classList.add("preview");
+        }
+    }
+
+    addKeyboardListeners(){
+        window.addEventListener("keydown", this.keydownListener);
+    }
+
+    removeKeyboardListeners(){
+        window.removeEventListener("keydown", this.keydownListener);
+    }
+
+    keydown(ev){
+        console.log("-----------------");
+        console.log(ev);
+        if(ev.code==="Space"){
+            this.play();
+        }
+        switch (ev.code) {
+            case "Space":
+                this.play();
+                break;
+            case "Escape":
+                this.div.querySelector(".cancelBtn").click();
+                break;
+            default:
+                break;
         }
     }
 
