@@ -206,8 +206,6 @@ export default class PianoEditor {
     }
 
     keydown(ev){
-        console.log("-----------------");
-        console.log(ev);
         if(ev.code==="Space"){
             this.play();
         }
