@@ -214,8 +214,12 @@
 	outline: #2b2b2b solid 1px;
 }
 
-.laneStepSeparator.mod3 {
-	outline: #2b2b2b solid 3px;
+.laneStepSeparator.mod4_3 {
+	outline: #353535 solid 3px;
+}
+
+.laneStepSeparator.mod16_15 {
+	outline: black solid 3px;
 }
 
 /* --- Notes --- */

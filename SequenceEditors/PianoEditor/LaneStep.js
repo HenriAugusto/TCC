@@ -20,7 +20,8 @@ import Note from "./Note.js";
            because the % unit is always based on the content box's width */
         let separator = document.createElement("div");
             separator.classList.add("laneStepSeparator");
-            separator.classList.add( "mod"+step % 4);
+            separator.classList.add( "mod4_"+step % 4);
+            separator.classList.add( "mod16_"+step % 16);
 
         lane.div.querySelector(".laneStepsContainer").append(this.div, separator);
         this.addEventHandlers(editor, lane);
