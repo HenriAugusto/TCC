@@ -21,7 +21,12 @@ export default class PianoEditor {
     originalSequence;
     isDrumSequence;
     keydownListener = this.keydown.bind(this);
-    selectedNotes = [];
+    selection = {
+        notes: [],
+        selecting: false,
+        mouseStartEvent: null,
+        mouseTargetLaneStep: null
+    };
 
     constructor(){
         if(!CSS_INITIALIZED){
@@ -170,9 +175,48 @@ export default class PianoEditor {
         this.div.style.display = "";
     }
 
-    mouseDownOnStep(ev, laneStep, lane){
-        this.mouseDownStepIndex = laneStep.step;
-        this.notePreview = true;
+    mouseDownOnStep(downEv, laneStep, lane){
+        // left button
+        if( downEv.buttons & 1){
+            this.mouseDownStepIndex = laneStep.step;
+            this.notePreview = true;
+            this.deselectAllNotes();
+        }
+        //right button
+        if (downEv.buttons & 2){
+            this.selection.selecting = true;
+            this.selection.mouseStartEvent = downEv;
+            let selectionRect = document.createElement("div");
+                selectionRect.classList.add("selectionRectangle");
+                selectionRect.style.left = downEv.pageX+"px";
+                selectionRect.style.top = downEv.pageY+"px";
+                selectionRect.style.width = "1px";
+                selectionRect.style.height = "1px";
+            /* First We make notes ignore our mouse events otherwise the
+             * .pianoEditorNote <div>s would be captured (since they have
+             * a parent .laneStep) and thus their parent laneStep would be
+             * considered (mistakingly) the target laneStep for the selection
+             * rectangle.
+             *
+             * That means that if you release the right button over a
+             * .pianoEditorNote's <div>, the `mousemove` event would be fired
+             * in the starting laneStep of that note.
+             */
+            document.querySelectorAll(".pianoEditorNote").forEach( n => n.classList.add("ignoreMouse") );
+
+            document.querySelector("body").append(selectionRect);
+
+            window.addEventListener("contextmenu", (upEv) => {
+                document.querySelectorAll(".pianoEditorNote.ignoreMouse").forEach( n => n.classList.remove("ignoreMouse") );
+                upEv.preventDefault();
+                selectionRect.remove();
+                if(!upEv.shiftKey) this.deselectAllNotes();
+                let targetLaneStep = this.selection.mouseTargetLaneStep;
+                let notesToBeSelected = this.getNotesInRectangle(laneStep, targetLaneStep );
+                notesToBeSelected.forEach( n => this.selectNote(n) );
+                this.selection.selecting = false;
+            }, {once: true});
+        }
     }
 
     mouseUpOnStep(ev, laneStep, lane){
@@ -185,15 +229,43 @@ export default class PianoEditor {
     }
 
     mouseOverStep(ev, laneStep, lane){
-        if(!this.notePreview) return;
-        this.resetNotePreview();
+        // holding left button:
+        if( ev.buttons & 1 ){
+                if(!this.notePreview) return;
+                this.resetNotePreview();
 
-        this.mouseOverStepIndex = laneStep.step;
-        let diff = laneStep.step-this.mouseDownStepIndex;
-        let unitDiff = diff >= 0 ? 1 : -1;
+                this.mouseOverStepIndex = laneStep.step;
+                let diff = laneStep.step-this.mouseDownStepIndex;
+                let unitDiff = diff >= 0 ? 1 : -1;
 
-        for(let i=this.mouseDownStepIndex; i!=laneStep.step+unitDiff ; i+=unitDiff ){
-            lane.steps[i].div.classList.add("preview");
+                for(let i=this.mouseDownStepIndex; i!=laneStep.step+unitDiff ; i+=unitDiff ){
+                    lane.steps[i].div.classList.add("preview");
+                }
+        }
+        if( ev.buttons & 2 && this.selection.selecting ){
+            this.selection.mouseTargetLaneStep = laneStep;
+        }
+    }
+
+    mouseMoveStep(ev, laneStep, lane){
+        // holding right button:
+        if( ev.buttons & 2 && this.selection.selecting){
+            if(this.selection.selecting){
+                let downEv = this.selection.mouseStartEvent;
+                let selectionRect = document.querySelector(".selectionRectangle");
+                let topLeft = {
+                    "x": Math.min(downEv.pageX, ev.pageX ),
+                    "y": Math.min(downEv.pageY, ev.pageY )
+                };
+                let bottomRight = {
+                    "x": Math.max(downEv.pageX, ev.pageX ),
+                    "y": Math.max(downEv.pageY, ev.pageY )
+                };
+                selectionRect.style.top = topLeft.y+"px";
+                selectionRect.style.left = topLeft.x+"px";
+                selectionRect.style.width = (bottomRight.x-topLeft.x)+"px";
+                selectionRect.style.height = (bottomRight.y-topLeft.y)+"px";
+            }
         }
     }
 
@@ -270,7 +342,7 @@ export default class PianoEditor {
      * @param {Note} note
      */
     selectNote(note){
-        this.selectedNotes.push(note);
+        this.selection.notes.push(note);
         note.div.classList.add("selected");
     }
 
@@ -279,7 +351,7 @@ export default class PianoEditor {
      * @param {Note} note
      */
     deselectNote(note){
-        this.selectedNotes = this.selectedNotes.filter( x => x != note);
+        this.selection.notes = this.selection.notes.filter( x => x != note);
         note.div.classList.remove("selected");
     }
 
@@ -287,21 +359,50 @@ export default class PianoEditor {
      * Deselects all selected notes
      */
     deselectAllNotes(){
-        this.selectedNotes.forEach( note => note.div.classList.remove("selected") );
-        this.selectedNotes = [];
+        this.selection.notes.forEach( note => note.div.classList.remove("selected") );
+        this.selection.notes = [];
     }
 
     /**
      * Delete all the selected notes
      */
     deleteSelectedNotes(){
-        this.selectedNotes.forEach( (note) => {
+        this.selection.notes.forEach( (note) => {
             this.lanes.forEach( (lane) => {
                 if( note.pitch == lane.pitch ){
                     lane.removeNote(note);
                 }
             });
         });
+    }
+
+    /**
+     * Get all notes that are in a rectangular area. This area is given by two
+     * {@link LaneStep} objects.
+     * @param {LaneStep} laneStep1
+     * @param {LaneStep} laneStep2
+     * @returns {Note[]}
+     */
+    getNotesInRectangle(laneStep1, laneStep2){
+        let out = [];
+        let lane1 = this.lanes.find( l => l.steps.includes(laneStep1) );
+        let lane2 = this.lanes.find( l => l.steps.includes(laneStep2) );
+
+        let stepMin = Math.min( laneStep1.step, laneStep2.step);
+        let stepMax = Math.max( laneStep1.step, laneStep2.step);
+        let pitchMin = Math.min( lane1.pitch, lane2.pitch);
+        let pitchMax = Math.max( lane1.pitch, lane2.pitch);
+        this.lanes.forEach( l => {
+            l.notes.forEach( n => {
+                if(    n.pitch >= pitchMin
+                    && n.pitch <= pitchMax
+                    && n.start >= stepMin
+                    && n.end-1   <= stepMax){
+                        out.push(n);
+                }
+            });
+        });
+        return out;
     }
 }
 

@@ -37,19 +37,16 @@ import Note from "./Note.js";
      */
     addEventHandlers(editor, lane){
         this.div.addEventListener("mousedown", (ev) => {
-            if(ev.which===1){
-                editor.mouseDownOnStep(ev, this, lane);
-            }
+            editor.mouseDownOnStep(ev, this, lane);
         });
         this.div.addEventListener("mouseover", (ev) => {
-            if(ev.which===1){
-                editor.mouseOverStep(ev, this, lane);
-            }
+            editor.mouseOverStep(ev, this, lane);
+        });
+        this.div.addEventListener("mousemove", (ev) => {
+            editor.mouseMoveStep(ev, this, lane);
         });
         this.div.addEventListener("mouseup", (ev) => {
-            if(ev.which===1){
-                editor.mouseUpOnStep(ev, this, lane);
-            }
+            editor.mouseUpOnStep(ev, this, lane);
         });
     }
 }

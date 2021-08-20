@@ -232,3 +232,16 @@
 .pianoEditorNote.selected {
 	background-color: lawngreen;
 }
+
+.pianoEditorNote.ignoreMouse {
+	pointer-events: none;
+}
+
+/* -- Selection --- */
+
+.selectionRectangle {
+	position: fixed;
+	outline: solid lawngreen 5px;
+	z-index: 666;
+	pointer-events: none;
+}

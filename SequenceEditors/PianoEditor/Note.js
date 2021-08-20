@@ -46,12 +46,12 @@ export default class Note {
         let noteDiv = document.createElement("div");
             noteDiv.classList.add("pianoEditorNote");
             noteDiv.style.width = length+"%";
-        let deleteNoteFunc = lane.removeNote.bind(lane, this);
             noteDiv.addEventListener("mousedown", (ev) => {
                 editor.clickOnNote(this, ev);
                 ev.preventDefault();
                 ev.stopPropagation();
             });
+        noteDiv.addEventListener("contextmenu", e => e.preventDefault() );
         this.div = noteDiv;
         return noteDiv;
     }
