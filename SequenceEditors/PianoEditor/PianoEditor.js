@@ -278,9 +278,6 @@ export default class PianoEditor {
     }
 
     keydown(ev){
-        if(ev.code==="Space"){
-            this.play();
-        }
         switch (ev.code) {
             case "Space":
                 this.play();
