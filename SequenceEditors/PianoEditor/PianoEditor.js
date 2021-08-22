@@ -213,7 +213,7 @@ export default class PianoEditor {
                 if(!upEv.shiftKey) this.deselectAllNotes();
                 let targetLaneStep = this.selection.mouseTargetLaneStep;
                 let notesToBeSelected = this.getNotesInRectangle(laneStep, targetLaneStep );
-                notesToBeSelected.forEach( n => this.selectNote(n) );
+                this.selectNotes(notesToBeSelected);
                 this.selection.selecting = false;
             }, {once: true});
         }
@@ -291,26 +291,22 @@ export default class PianoEditor {
                 break;
             case "ArrowUp":
                 let transposedUpNotes = this.transpose( this.getSelectedNotes(), 1 );
-                this.deselectAllNotes();
-                this.selectNotes( transposedUpNotes );
+                this.setSelection(transposedUpNotes);
                 ev.preventDefault();
                 break;
             case "ArrowDown":
                 let transposedDownNotes = this.transpose( this.getSelectedNotes(), -1 );
-                this.deselectAllNotes();
-                this.selectNotes( transposedDownNotes );
+                this.setSelection(transposedDownNotes);
                 ev.preventDefault();
                 break;
             case "ArrowLeft":
                 let shiftedLeft = this.shiftNotes( this.getSelectedNotes(), -1 );
-                this.deselectAllNotes();
-                this.selectNotes( shiftedLeft );
+                this.setSelection(shiftedLeft);
                 ev.preventDefault();
                 break;
             case "ArrowRight":
                 let shiftedRight = this.shiftNotes( this.getSelectedNotes(), 1 );
-                this.deselectAllNotes();
-                this.selectNotes( shiftedRight );
+                this.setSelection(shiftedRight);
                 ev.preventDefault();
                 break;
             default:
@@ -359,6 +355,16 @@ export default class PianoEditor {
         this.selectNote(note);
     }
 
+
+    /**
+     * Set the selection to the specified notes.
+     * @param {Note[]} notes
+     */
+    setSelection(notes){
+        this.deselectAllNotes();
+        this.selectNotes(notes);
+    }
+
     /**
      * Add the given note to the selection.
      * @param {Note} note
@@ -372,7 +378,7 @@ export default class PianoEditor {
      * Add all the given notes to the selection.
      * @param {Note[]} notes
      */
-    selectNotes( notes ){
+    selectNotes(notes){
         notes.forEach( n => this.selectNote(n) );
     }
 
