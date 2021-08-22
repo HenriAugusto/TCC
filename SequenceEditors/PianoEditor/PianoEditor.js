@@ -301,6 +301,18 @@ export default class PianoEditor {
                 this.selectNotes( transposedDownNotes );
                 ev.preventDefault();
                 break;
+            case "ArrowLeft":
+                let shiftedLeft = this.shiftNotes( this.getSelectedNotes(), -1 );
+                this.deselectAllNotes();
+                this.selectNotes( shiftedLeft );
+                ev.preventDefault();
+                break;
+            case "ArrowRight":
+                let shiftedRight = this.shiftNotes( this.getSelectedNotes(), 1 );
+                this.deselectAllNotes();
+                this.selectNotes( shiftedRight );
+                ev.preventDefault();
+                break;
             default:
                 break;
         }
@@ -459,6 +471,35 @@ export default class PianoEditor {
         });
         console.log( this.selection.notes);
         return transposed;
+    }
+
+    /**
+     * Shift all notes to the left or right.
+     * If any note would fall outside of the sequence, nothing happens.
+     * @param {*} notes
+     * @param {*} amount
+     * @return {Note[]} - An array with the new, shifted notes.
+     */
+    shiftNotes( notes, amount ){
+        let shifted = [];
+
+        let leftmostNote = notes.reduce( (min, n) => min.start <= n.start ? min : n);
+        if( leftmostNote.start+amount < 0) return notes;
+
+        let rightmostNote = notes.reduce( (max, n) => max.end >= n.end ? max : n);
+        if( rightmostNote.end+amount > this.numSteps) return notes;
+
+        notes.forEach( shiftedNote => {
+            let lane = this.lanes.find( lane => lane.pitch === shiftedNote.pitch );
+            lane.removeNote(shiftedNote);
+            let newNote = lane.addNote(this,
+                                  shiftedNote.start+amount,
+                                  shiftedNote.end+amount,
+                                  this.isDrumSequence,
+                                  shiftedNote.velocity);
+            shifted.push(newNote);
+        });
+        return shifted;
     }
 }
 
