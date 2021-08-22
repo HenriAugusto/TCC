@@ -344,6 +344,13 @@ export default class PianoEditor {
     }
 
     /**
+    /**
+     * Get all selected notes
+     * @returns {Note[]} - An array containing the selected notes
+     */
+    getSelectedNotes(){
+        return [...this.selection.notes];
+    }
      * Deselects the given note
      * @param {Note} note
      */
