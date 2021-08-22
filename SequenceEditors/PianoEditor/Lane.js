@@ -92,12 +92,14 @@ import Note from "./Note.js";
      * @param {number} end - end step
      * @param {boolean} isDrum - if it is a drum note
      * @param {number} velocity - note velocity (0 <= vel <= 127)
+     * @return {Note} - the new Note's object.
      */
     addNote(editor, start, end, isDrum, velocity){
         let note = new Note(this.pitch, start, end, isDrum, velocity);
         let noteDiv = note.createDiv(editor, this);
         this.notes.push(note);
         this.steps[start].div.append(noteDiv);
+        return note;
     }
 
     /**
