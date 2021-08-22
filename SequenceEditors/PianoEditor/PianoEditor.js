@@ -280,6 +280,7 @@ export default class PianoEditor {
     keydown(ev){
         switch (ev.code) {
             case "Space":
+                ev.preventDefault();
                 this.play();
                 break;
             case "Delete":
