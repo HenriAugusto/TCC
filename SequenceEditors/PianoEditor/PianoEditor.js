@@ -335,7 +335,7 @@ export default class PianoEditor {
     }
 
     /**
-     * Selects the given note
+     * Add the given note to the selection.
      * @param {Note} note
      */
     selectNote(note){
@@ -344,6 +344,13 @@ export default class PianoEditor {
     }
 
     /**
+     * Add all the given notes to the selection.
+     * @param {Note[]} notes
+     */
+    selectNotes( notes ){
+        notes.forEach( n => this.selectNote(n) );
+    }
+
     /**
      * Get all selected notes
      * @returns {Note[]} - An array containing the selected notes
