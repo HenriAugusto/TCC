@@ -199,6 +199,7 @@
 
 .laneStep {
 	user-select: none; /* prevents some weird dragging */
+	display: grid;
 }
 
 .laneStep.preview {
