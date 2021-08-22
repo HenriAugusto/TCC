@@ -288,6 +288,18 @@ export default class PianoEditor {
             case "Escape":
                 this.div.querySelector(".cancelBtn").click();
                 break;
+            case "ArrowUp":
+                let transposedUpNotes = this.transpose( this.getSelectedNotes(), 1 );
+                this.deselectAllNotes();
+                this.selectNotes( transposedUpNotes );
+                ev.preventDefault();
+                break;
+            case "ArrowDown":
+                let transposedDownNotes = this.transpose( this.getSelectedNotes(), -1 );
+                this.deselectAllNotes();
+                this.selectNotes( transposedDownNotes );
+                ev.preventDefault();
+                break;
             default:
                 break;
         }
@@ -358,6 +370,8 @@ export default class PianoEditor {
     getSelectedNotes(){
         return [...this.selection.notes];
     }
+
+    /**
      * Deselects the given note
      * @param {Note} note
      */
@@ -414,6 +428,36 @@ export default class PianoEditor {
             });
         });
         return out;
+    }
+
+    /**
+     * Transpose the given notes
+     * @param {Note[]} notes - the notes to be transposed
+     * @param {number} amount - how much semitones to transpose
+     * @return {Note[]} - An array with the new, transposed notes.
+     */
+    transpose( notes , amount ){
+        let transposed = [];
+        notes.forEach( transpNote => {
+            let sourceLane = this.lanes.find( lane => lane.pitch === transpNote.pitch );
+            let targetLane = this.lanes.find( lane => lane.pitch === transpNote.pitch+amount );
+            if( targetLane ){
+                sourceLane.notes.forEach( laneNote => {
+                    if( transpNote.start === laneNote.start &&
+                        transpNote.end === laneNote.end){
+                        sourceLane.removeNote(transpNote);
+                        let newNote = targetLane.addNote(this,
+                                                         transpNote.start,
+                                                         transpNote.end,
+                                                         this.isDrumSequence,
+                                                         transpNote.velocity);
+                        transposed.push(newNote);
+                    };
+                });
+            }
+        });
+        console.log( this.selection.notes);
+        return transposed;
     }
 }
 
