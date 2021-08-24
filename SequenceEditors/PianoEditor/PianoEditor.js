@@ -254,12 +254,12 @@ export default class PianoEditor {
                 let downEv = this.selection.mouseStartEvent;
                 let selectionRect = document.querySelector(".selectionRectangle");
                 let topLeft = {
-                    "x": Math.min(downEv.pageX, ev.pageX ),
-                    "y": Math.min(downEv.pageY, ev.pageY )
+                    "x": Math.min(downEv.clientX, ev.clientX ),
+                    "y": Math.min(downEv.clientY, ev.clientY )
                 };
                 let bottomRight = {
-                    "x": Math.max(downEv.pageX, ev.pageX ),
-                    "y": Math.max(downEv.pageY, ev.pageY )
+                    "x": Math.max(downEv.clientX, ev.clientX ),
+                    "y": Math.max(downEv.clientY, ev.clientY )
                 };
                 selectionRect.style.top = topLeft.y+"px";
                 selectionRect.style.left = topLeft.x+"px";
