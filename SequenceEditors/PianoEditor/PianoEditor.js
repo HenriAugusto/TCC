@@ -324,12 +324,7 @@ export default class PianoEditor {
      * Scrolls the Piano Roll so the given note is visible
      * @param {Note} note
      */
-    async scrollToNote(note, smooth=false){
-        /* We wait a little just in case edit() is called
-           right before the constructor. In thoses cases
-           the editor would not be visible yet when this method
-           runs, which i cannot explain. */
-        await new Promise(resolve => setTimeout(resolve, 100));
+    scrollToNote(note, smooth=false){
         note.div.scrollIntoView({
             behavior: smooth ? "smooth" : "auto",
             block: "center"

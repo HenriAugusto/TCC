@@ -21,6 +21,7 @@ async function initialize(){
     EditorCard.pianoEditor = new PianoEditor();
 
     try {
+        await new Promise( (r) => setTimeout( () => r(), 150) );
         let editedSeq = await EditorCard.pianoEditor.edit(MELODY_1);
         let editedCard = new SequenceCard(editedSeq, "EDITED", "Melody");
         PLAYER_HAND.addCards(editedCard);
