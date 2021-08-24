@@ -1,5 +1,6 @@
 import Lane from "./Lane.js";
 import Note from "./Note.js";
+import DoUndo from "./DoUndo.js";
 
 const WHITE_KEYS = [0,2,4,5,7,9,11];
 var CSS_INITIALIZED = false;
@@ -27,6 +28,7 @@ export default class PianoEditor {
         mouseStartEvent: null,
         mouseTargetLaneStep: null
     };
+    doUndo = new DoUndo(this);
 
     constructor(){
         if(!CSS_INITIALIZED){
@@ -107,10 +109,12 @@ export default class PianoEditor {
         return new Promise( (resolve, reject) => {
             applyBtn.addEventListener("click", () => {
                 this.hide();
+                this.doUndo.clear();
                 resolve( this.buildNoteSequence() );
             });
             cancelBtn.addEventListener("click", () => {
                 this.hide();
+                this.doUndo.clear();
                 reject("User canceled");
             });
         });
@@ -284,8 +288,9 @@ export default class PianoEditor {
                 this.play();
                 break;
             case "Delete":
-                    this.deleteSelectedNotes();
-                    break;
+                this.deleteSelectedNotes();
+                this.doUndo.snapshot();
+                break;
             case "Escape":
                 this.div.querySelector(".cancelBtn").click();
                 break;
@@ -309,6 +314,12 @@ export default class PianoEditor {
                 this.setSelection(shiftedRight);
                 ev.preventDefault();
                 break;
+            case "KeyZ":
+                if(ev.ctrlKey) this.doUndo.undo();
+                break;
+            case "KeyY":
+                if(ev.ctrlKey) this.doUndo.redo();
+                    break;
             default:
                 break;
         }
