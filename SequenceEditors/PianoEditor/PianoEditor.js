@@ -99,6 +99,7 @@ export default class PianoEditor {
         this.originalSequence = mm.sequences.clone(seq);
         this.show();
         if(seq) this.loadSequence(seq);
+        this.doUndo.snapshot();
         // remove all listeners
         let applyBtn = this.div.querySelector(".applyBtn");
         let applyBtnClone = applyBtn.cloneNode(true);
@@ -230,6 +231,7 @@ export default class PianoEditor {
         let stepStart = Math.min(this.mouseDownStepIndex, laneStep.step)
         let stepEnd = Math.max(this.mouseDownStepIndex, laneStep.step)
         lane.addNote(this, stepStart, stepEnd+1, this.isDrumSequence);
+        this.doUndo.snapshot();
     }
 
     mouseOverStep(ev, laneStep, lane){
@@ -289,7 +291,6 @@ export default class PianoEditor {
                 break;
             case "Delete":
                 this.deleteSelectedNotes();
-                this.doUndo.snapshot();
                 break;
             case "Escape":
                 this.div.querySelector(".cancelBtn").click();
@@ -424,6 +425,7 @@ export default class PianoEditor {
                 }
             });
         });
+        this.doUndo.snapshot();
     }
 
     /**
@@ -482,6 +484,7 @@ export default class PianoEditor {
             }
         });
         console.log( this.selection.notes);
+        this.doUndo.snapshot();
         return transposed;
     }
 
@@ -511,6 +514,7 @@ export default class PianoEditor {
                                   shiftedNote.velocity);
             shifted.push(newNote);
         });
+        this.doUndo.snapshot();
         return shifted;
     }
 }
