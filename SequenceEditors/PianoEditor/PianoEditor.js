@@ -425,6 +425,7 @@ export default class PianoEditor {
                 }
             });
         });
+        this.selection.notes = [];
         this.doUndo.snapshot();
     }
 
