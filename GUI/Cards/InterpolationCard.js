@@ -21,7 +21,7 @@ class InterpolationCard extends SequenceCard {
      */
     constructor( seq1, seq2, steps,  title){
         super(seq1, title, "MelodyInterpolator");
-        
+
         let sliderContainer = document.createElement("div");
         this.slider = document.createElement("input");
         this.slider.setAttribute("type", "range");
@@ -30,20 +30,16 @@ class InterpolationCard extends SequenceCard {
         this.slider.setAttribute("value", Math.round(steps/2));
         this.slider.classList.add("interpolationSlider");
         this.#setSliderEventHandlers(this.slider);
-            
+
         let thisCard = this;
         this.slider.oninput = function() {
             let int = Math.round( this.value );
             thisCard.selectInterpolatedSequence( int );
         }
-        
+
         sliderContainer.appendChild(this.slider);
         this.cardDiv.appendChild(sliderContainer);
-
-        VAE.interpolateSequences([seq1, seq2], steps).then( (seqs) => {
-            this.interpolatedSequences = seqs;
-            this.setNoteSequence(seqs[Math.round(steps/2)]);
-        });
+        this.requestInterpolations(seq1, seq2, steps);
     }
 
     /**
@@ -51,13 +47,12 @@ class InterpolationCard extends SequenceCard {
      * @param {number} stepIndex - The index of the step in the interpolation.
      */
     selectInterpolatedSequence(i){
-        i = Math.max(0, i);
-        i = Math.min(this.interpolatedSequences.length-1, i);
+        i = Math.max(0, i);        i = Math.min(this.interpolatedSequences.length-1, i);
         console.log("selecting interpolated sequence: "+i);
         this.setNoteSequence( this.interpolatedSequences[i] );
     }
 
-    /** 
+    /**
      * Since our slider will be inside a draggable container, the whole card would be
      * dragged with it when interacting with the slider. To solve that we must
      * temporarily set the draggable attribute to false while changing the slider and
@@ -82,5 +77,20 @@ class InterpolationCard extends SequenceCard {
                 }
                 }, {once:true});
         });
+    }
+
+    /**
+     * Requests MusicVAE for interpolations
+     * @async
+     * @param {NoteSequence} seq1
+     * @param {NoteSequence} seq2
+     * @param {number} steps - How much steps in the interpolation, counting the original sequences
+     */
+    async requestInterpolations(seq1, seq2, steps){
+        this.slider.disabled = true;
+        let seqs = await VAE.interpolateSequences([seq1, seq2], steps);
+        this.interpolatedSequences = seqs;
+        this.setNoteSequence(seqs[Math.round(steps/2)]);
+        this.slider.disabled = false;
     }
 }
