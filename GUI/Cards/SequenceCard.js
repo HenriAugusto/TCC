@@ -76,6 +76,11 @@ class SequenceCard extends Card {
             console.log("RECEIVED SEQUENCE FROM EDITOR PROMISE");
             console.log(seq);
             this.setNoteSequence(seq);
+        } else if(card instanceof ContinueCard){
+            let cont = await RNN.continuationRequest(this.noteSequence, this.noteSequence.totalQuantizedSteps);
+            let card = new SequenceCard(cont, "Continuation",
+                                        SequenceUtils.isDrumSequence(cont) ? "Drums" : "Melody" );
+            PLAYER_HAND.addCards(card);
         }
     }
 

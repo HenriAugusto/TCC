@@ -51,6 +51,17 @@
     transform: translate(16%, -17%) scale(1.5);
 }
 
+.ContinueCard {
+    background-color: #ff9100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.continueCardIcon {
+    transform: translate(13%, -1%) scale(2.2);
+}
+
 .card.highlighted {
     border-style: dashed;
     border-color: #ff6a00;

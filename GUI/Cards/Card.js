@@ -16,6 +16,7 @@ const CARD_TYPES = Object.freeze({
     "ContinueRNN": "Continue with RNN",
     "MelodyInterpolator": "Melody Interpolator",
     "EditorCard": "Editor Card",
+    "ContinueCard": "Continue Card",
 });
 
 /**

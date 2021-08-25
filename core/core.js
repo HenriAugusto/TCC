@@ -5,6 +5,7 @@ async function initialize(){
 
     PLAYER_HAND.addCards( [
         new EditorCard(),
+        new ContinueCard(),
         new SequenceCard(BEETH_9TH ,"Beethoven", "Melody"),
         new SequenceCard(DRUM_SEQ_1 ,"Drums", "Drums"),
         new MelodyGenerator(MELODY_1, "Melody Generator"),
