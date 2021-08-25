@@ -14,7 +14,8 @@ const CARD_TYPES = Object.freeze({
     "Drums": "Drums Card",
     "DrumsGenerator": "Drums Generator",
     "ContinueRNN": "Continue with RNN",
-    "MelodyInterpolator": "Melody Interpolator"
+    "MelodyInterpolator": "Melody Interpolator",
+    "EditorCard": "Editor Card",
 });
 
 /**
@@ -44,7 +45,7 @@ class Card {
             throw new Error("invalid type for card: "+type);
         }
         this.type = type;
-        this.index = Card.#getUniqueIndex();        
+        this.index = Card.#getUniqueIndex();
 
         this.cardDiv = document.createElement("div");
         this.cardDiv.classList.add("card");
@@ -55,7 +56,7 @@ class Card {
         let titleEl = document.createElement("p");
         titleEl.innerHTML = title;
         this.cardDiv.appendChild(titleEl);
-        
+
         this.makeCardDraggable();
         this.makeCardDroppable();
     }
@@ -75,7 +76,7 @@ class Card {
             event.dropEffect = "link";
             DragAndDrop.dragPayload = this;
         });
-        
+
         // DRAG END
         card.addEventListener("dragend", (ev) => {
             card.style.opacity = 1;
@@ -98,7 +99,7 @@ class Card {
             if( !(this==DragAndDrop.dragPayload) && event.preventDefault) {
                 event.preventDefault(); //prevents bubbling (accept drop)
                 cardDiv.classList.add("highlighted");
-            } 
+            }
         });
 
         // DRAG LEAVE
@@ -110,7 +111,7 @@ class Card {
         cardDiv.addEventListener("dragover", (event) => {
             if( !(this==DragAndDrop.dragPayload) && event.preventDefault) {
                 event.preventDefault(); //prevents bubbling (accept drop)
-            } 
+            }
         });
 
         // DROP
@@ -133,7 +134,7 @@ class Card {
      * This abstract method must be overridden in every extending class.
      * It is called when a Card is dropped into another.
      * @abstract
-     * @param {Card} card 
+     * @param {Card} card
      */
     receiveDroppedCard(card){
         /* mimic abstact method */

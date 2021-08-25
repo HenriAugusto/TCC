@@ -43,8 +43,8 @@ class SequenceCard extends Card {
      * @param {INoteSequence} seq - The new {@link INoteSequence} to be contained in the card.
      */
     setNoteSequence(seq){
-        this.noteSequence = seq;
-        this.visualizer = new mm.PianoRollCanvasVisualizer(seq, this.visualizerCanvas)
+        this.noteSequence = mm.sequences.clone(seq);
+        this.visualizer = new mm.PianoRollCanvasVisualizer(this.noteSequence, this.visualizerCanvas)
         /* remove element style width and height that are set by PianoRollCanvasVisualizer
            so our CSS can be applied */
         this.visualizerCanvas.style.removeProperty("width");
@@ -67,9 +67,16 @@ class SequenceCard extends Card {
      */
     async receiveDroppedCard(card){
         console.log("receiving card");
-        let interpCard = new InterpolationCard(card.noteSequence,
-                                               this.noteSequence, 16, "Interpolated");
-        PLAYER_HAND.addCards(interpCard);
+        if(card instanceof SequenceCard){
+            let interpCard = new InterpolationCard(card.noteSequence,
+                this.noteSequence, 16, "Interpolated");
+            PLAYER_HAND.addCards(interpCard);
+        } else if(card instanceof EditorCard){
+            let seq = await EditorCard.pianoEditor.edit(this.noteSequence);
+            console.log("RECEIVED SEQUENCE FROM EDITOR PROMISE");
+            console.log(seq);
+            this.setNoteSequence(seq);
+        }
     }
 
     /**

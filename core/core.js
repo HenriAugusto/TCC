@@ -1,7 +1,10 @@
+import PianoEditor from '../SequenceEditors/PianoEditor/PianoEditor.js'
+
 async function initialize(){
     initGUI();
 
     PLAYER_HAND.addCards( [
+        new EditorCard(),
         new SequenceCard(BEETH_9TH ,"Beethoven", "Melody"),
         new SequenceCard(DRUM_SEQ_1 ,"Drums", "Drums"),
         new MelodyGenerator(MELODY_1, "Melody Generator"),
@@ -15,6 +18,21 @@ async function initialize(){
         new DrumsGenerator(DRUM_SEQ_3, "Drum Generator 3")
     ] );
 
+    EditorCard.pianoEditor = new PianoEditor();
+
+    try {
+        await new Promise( (r) => setTimeout( () => r(), 150) );
+        let editedSeq = await EditorCard.pianoEditor.edit(MELODY_1);
+        let editedCard = new SequenceCard(editedSeq, "EDITED", "Melody");
+        PLAYER_HAND.addCards(editedCard);
+    } catch (e){
+        console.log("catch user cancel action");
+    }
+
+
+    /*editedSeq = await EditorCard.pianoEditor.edit(DRUM_SEQ_1);
+    editedCard = new SequenceCard(editedSeq, "EDITED 2", "Drums");
+    PLAYER_HAND.addCards(editedCard);*/
 
     /* The first models we are gonna need are the ones that
      * are capable of generating melodies. To speed up initialization
@@ -30,3 +48,5 @@ async function initialize(){
 
     //VAE_MidiMe.initializeWorker();
 }
+
+window.addEventListener("load", initialize);

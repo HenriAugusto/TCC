@@ -40,6 +40,17 @@
     background-color: rgb(75 155 255);
 }
 
+.EditorCard {
+    background-color: #00ff3e;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.editorCardIcon {
+    transform: translate(16%, -17%) scale(1.5);
+}
+
 .card.highlighted {
     border-style: dashed;
     border-color: #ff6a00;
