@@ -1,7 +1,7 @@
 var PLAYER_HAND;
 
 /**
- * A class for containing and displaying Cards. It is primarily used to display the 
+ * A class for containing and displaying Cards. It is primarily used to display the
  * cards in the player's "hand".
  */
 class CardHolder {
@@ -43,5 +43,15 @@ class CardHolder {
         }
         this.cards = this.cards.filter( x => x !== card);
         card.cardDiv.remove();
+    }
+
+    /**
+     * Remove all cards from the holder
+     * @returns {Card[]} All the removed cards
+     */
+    clear(){
+        let temp = [...this.cards];
+        this.cards.forEach(x => this.removeCard(x));
+        return temp;
     }
 }
