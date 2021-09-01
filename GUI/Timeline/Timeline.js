@@ -21,11 +21,15 @@ class Timeline {
     /**
      * Add a track to the timeline.
      */
-    addTrack(){
+    addEmptyTrack(){
         this.tracks[this.trackCounter] = new Track(
             this, this.trackCounter, "(Unnamed Track)", this.steps
             );
         this.trackCounter++;
+    }
+
+    addTrack(track){
+        this.tracks[this.trackCounter++] = track;
     }
 
     /**
