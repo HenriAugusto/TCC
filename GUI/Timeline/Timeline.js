@@ -16,9 +16,6 @@ class Timeline {
     constructor(node){
         this.node = node;
         this.node.classList.add("timeline");
-        this.addTrack();
-        this.addTrack();
-        this.addTrack();
     }
 
     /**
@@ -64,7 +61,7 @@ class Timeline {
                         //adjust the resulting sequence length
                         let totalSeqLength = Math.max(seq.totalQuantizedSteps, newNote.quantizedEndStep);
                         seq.totalQuantizedSteps = totalSeqLength;
-                    }                
+                    }
                 }
             }
         }
