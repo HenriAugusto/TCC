@@ -16,7 +16,7 @@ class SaveLoad {
         let fileSystemHandles = await window.showOpenFilePicker();
         let file = await fileSystemHandles[0].getFile();
         let contentJSON = await file.text();
-        let game = JSON.parse(contentJSON, );
+        let game = JSON.parse(contentJSON);
         PLAYER_HAND = CardHolder.load(game.playerHand, PLAYER_HAND.div);
     }
 
