@@ -5,7 +5,7 @@
 class Timeline {
     node;
     tracks = {};
-    trackId = 0;
+    trackCounter = 0;
     steps = 64*4*4;
     snap = 16;
 
@@ -22,13 +22,13 @@ class Timeline {
     }
 
     /**
-     * Add a track to the timeline. 
+     * Add a track to the timeline.
      */
     addTrack(){
-        this.tracks[this.trackId] = new Track(
-            this, this.trackId, "(Unnamed Track)", this.steps
+        this.tracks[this.trackCounter] = new Track(
+            this, this.trackCounter, "(Unnamed Track)", this.steps
             );
-        this.trackId++;
+        this.trackCounter++;
     }
 
     /**
