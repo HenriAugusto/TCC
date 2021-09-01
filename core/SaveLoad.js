@@ -4,11 +4,20 @@
 class SaveLoad {
 
     static save(){
-
+        let game = {
+            playerHand: PLAYER_HAND.save()
+        }
+        let gameJSON = JSON.stringify(game, null, 2);
+        SaveLoad.download(gameJSON, "game.json");
     }
 
-    static load(){
-
+    static async load(){
+        PLAYER_HAND.clear();
+        let fileSystemHandles = await window.showOpenFilePicker();
+        let file = await fileSystemHandles[0].getFile();
+        let contentJSON = await file.text();
+        let game = JSON.parse(contentJSON, );
+        PLAYER_HAND = CardHolder.load(game.playerHand, PLAYER_HAND.div);
     }
 
     static download(JSONString, filename){

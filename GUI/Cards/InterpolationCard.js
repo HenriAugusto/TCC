@@ -10,6 +10,9 @@ class InterpolationCard extends SequenceCard {
      */
     interpolatedSequences;
     slider;
+    seq1;
+    seq2;
+    steps;
 
     /**
      * Constructs an InterpolationCard
@@ -19,8 +22,11 @@ class InterpolationCard extends SequenceCard {
      * @param {string} title - Card's title
      * @public
      */
-    constructor( seq1, seq2, steps,  title){
+    constructor(seq1, seq2, steps, title){
         super(seq1, title, "MelodyInterpolator");
+        this.seq1 = seq1;
+        this.seq2 = seq2;
+        this.steps = steps;
 
         let sliderContainer = document.createElement("div");
         this.slider = document.createElement("input");
@@ -48,7 +54,6 @@ class InterpolationCard extends SequenceCard {
      */
     selectInterpolatedSequence(i){
         i = Math.max(0, i);        i = Math.min(this.interpolatedSequences.length-1, i);
-        console.log("selecting interpolated sequence: "+i);
         this.setNoteSequence( this.interpolatedSequences[i] );
     }
 
@@ -92,5 +97,29 @@ class InterpolationCard extends SequenceCard {
         this.interpolatedSequences = seqs;
         this.setNoteSequence(seqs[Math.round(steps/2)]);
         this.slider.disabled = false;
+    }
+
+    /**
+     * Creates an snapshot containing all the information needed
+     * to recreate this object later. Meant to be used with {@link SaveLoad}.
+     * @returns {Object} snapshot
+     */
+    save(){
+        let s = super.save();
+        s.seq1 = this.seq1;
+        s.seq2 = this.seq2;
+        s.steps = this.steps;
+        s.interpolatedSequences = this.interpolatedSequences;
+        return s;
+    }
+
+    /**
+     * Reconstructs a object from it snapshot. Meant to be used with {@link SaveLoad}.
+     * @static
+     * @param {Object} obj - As returned from the {@link save()} method.
+     * @returns
+     */
+    static load(obj){
+        return new InterpolationCard(obj.seq1, obj.seq2, obj.steps, obj.title);
     }
 }

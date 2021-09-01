@@ -54,4 +54,54 @@ class CardHolder {
         this.cards.forEach(x => this.removeCard(x));
         return temp;
     }
+
+    /**
+     * Creates an snapshot containing all the information needed
+     * to recreate this object later. Meant to be used with {@link SaveLoad}.
+     * @returns {Object} snapshot
+     */
+    save(){
+        let out = {
+            cards: []
+        };
+        this.cards.forEach(card => out.cards.push(card.save() ) );
+        return out;
+    }
+
+    /**
+     * Reconstructs a object from it snapshot. Meant to be used with {@link SaveLoad}.
+     * @static
+     * @param {Object} obj - As returned from the {@link save()} method.
+     * @returns
+     */
+    static load(obj, element){
+        let ch = new CardHolder(element);
+        obj.cards.forEach( c => {
+            let card;
+            switch(c.class){
+                case "SequenceCard":
+                    card = SequenceCard.load(c);
+                    break;
+                case "MelodyGenerator":
+                    card = MelodyGenerator.load(c);
+                    break;
+                case "DrumsGenerator":
+                    card = DrumsGenerator.load(c);
+                    break;
+                case "EditorCard":
+                    card = EditorCard.load(c);
+                    break;
+                case "ContinueCard":
+                    card = ContinueCard.load(c);
+                    break;
+                case "InterpolationCard":
+                    card = InterpolationCard.load(c);
+                    break;
+                default:
+                    throw new Error("CardHolder.load() error: wrong card class: "+c.class);
+            }
+            if(card) ch.addCards(card);
+        });
+        return ch;
+    }
 }
