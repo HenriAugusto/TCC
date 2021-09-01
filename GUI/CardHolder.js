@@ -77,30 +77,7 @@ class CardHolder {
     static load(obj, element){
         let ch = new CardHolder(element);
         obj.cards.forEach( c => {
-            let card;
-            switch(c.class){
-                case "SequenceCard":
-                    card = SequenceCard.load(c);
-                    break;
-                case "MelodyGenerator":
-                    card = MelodyGenerator.load(c);
-                    break;
-                case "DrumsGenerator":
-                    card = DrumsGenerator.load(c);
-                    break;
-                case "EditorCard":
-                    card = EditorCard.load(c);
-                    break;
-                case "ContinueCard":
-                    card = ContinueCard.load(c);
-                    break;
-                case "InterpolationCard":
-                    card = InterpolationCard.load(c);
-                    break;
-                default:
-                    throw new Error("CardHolder.load() error: wrong card class: "+c.class);
-            }
-            if(card) ch.addCards(card);
+            ch.addCards(SaveLoad.loadCard(c));
         });
         return ch;
     }

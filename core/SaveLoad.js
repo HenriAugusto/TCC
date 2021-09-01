@@ -31,4 +31,22 @@ class SaveLoad {
         document.body.removeChild(a);
     }
 
+    static loadCard(obj){
+        switch(obj.class){
+            case "SequenceCard":
+                return SequenceCard.load(obj);
+            case "MelodyGenerator":
+                return MelodyGenerator.load(obj);
+            case "DrumsGenerator":
+                return DrumsGenerator.load(obj);
+            case "EditorCard":
+                return EditorCard.load(obj);
+            case "ContinueCard":
+                return ContinueCard.load(obj);
+            case "InterpolationCard":
+                return InterpolationCard.load(obj);
+            default:
+                throw new Error("SaveLoad.loadCard() error: wrong card class: "+obj.class);
+        }
+    }
 }
