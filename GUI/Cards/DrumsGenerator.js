@@ -23,5 +23,15 @@ class DrumsGenerator extends SequenceGenerator {
         let seq = await VAE.getNew4BarDrums();
         return seq;
     }
+
+    /**
+     * Reconstructs a object from it snapshot. Meant to be used with {@link SaveLoad}.
+     * @static
+     * @param {Object} obj - As returned from the {@link save()} method.
+     * @returns
+     */
+    static load(obj){
+        return new DrumsGenerator(obj.noteSequence, obj.title);
+    }
 }
 

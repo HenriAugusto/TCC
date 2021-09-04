@@ -2,6 +2,9 @@ var MAIN_TIMELINE;
 
 function initGUI(){
     MAIN_TIMELINE = new Timeline( document.getElementById("timeline") );
+    MAIN_TIMELINE.addEmptyTrack();
+    MAIN_TIMELINE.addEmptyTrack();
+    MAIN_TIMELINE.addEmptyTrack();
     initTemperatureSlider();
     PLAYER_HAND = new CardHolder( document.getElementById("cardHolder") );
     MAIN_DECK = new Deck();

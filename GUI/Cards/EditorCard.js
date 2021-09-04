@@ -11,4 +11,14 @@ class EditorCard extends Card {
         this.cardDiv.append(icon);
     }
 
+    /**
+     * Reconstructs a object from it snapshot. Meant to be used with {@link SaveLoad}.
+     * @static
+     * @param {Object} obj - As returned from the {@link save()} method.
+     * @returns
+     */
+    static load(obj){
+        return new EditorCard();
+    }
+
 }

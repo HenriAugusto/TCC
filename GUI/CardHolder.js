@@ -1,7 +1,7 @@
 var PLAYER_HAND;
 
 /**
- * A class for containing and displaying Cards. It is primarily used to display the 
+ * A class for containing and displaying Cards. It is primarily used to display the
  * cards in the player's "hand".
  */
 class CardHolder {
@@ -43,5 +43,42 @@ class CardHolder {
         }
         this.cards = this.cards.filter( x => x !== card);
         card.cardDiv.remove();
+    }
+
+    /**
+     * Remove all cards from the holder
+     * @returns {Card[]} All the removed cards
+     */
+    clear(){
+        let temp = [...this.cards];
+        this.cards.forEach(x => this.removeCard(x));
+        return temp;
+    }
+
+    /**
+     * Creates an snapshot containing all the information needed
+     * to recreate this object later. Meant to be used with {@link SaveLoad}.
+     * @returns {Object} snapshot
+     */
+    save(){
+        let out = {
+            cards: []
+        };
+        this.cards.forEach(card => out.cards.push(card.save() ) );
+        return out;
+    }
+
+    /**
+     * Reconstructs a object from it snapshot. Meant to be used with {@link SaveLoad}.
+     * @static
+     * @param {Object} obj - As returned from the {@link save()} method.
+     * @returns
+     */
+    static load(obj, element){
+        let ch = new CardHolder(element);
+        obj.cards.forEach( c => {
+            ch.addCards(SaveLoad.loadCard(c));
+        });
+        return ch;
     }
 }

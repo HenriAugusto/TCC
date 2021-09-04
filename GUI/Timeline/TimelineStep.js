@@ -10,7 +10,7 @@ class TimelineStep {
      * For now it must match css.syle (for now...)
      */
     static pixelWidth = 8;
-    
+
      /**
      * Create a TimelineStep.
      * @param {Track} track - The Track that will contain this TimelineStep.
@@ -46,7 +46,7 @@ class TimelineStep {
             if( b && event.preventDefault ) {
                 event.preventDefault(); //prevents bubbling (accept drop)
             }
-            
+
         });
 
         // DRAG LEAVE
@@ -69,13 +69,14 @@ class TimelineStep {
             if (event.stopPropagation) {
                 event.stopPropagation(); // stops the browser from redirecting.
             }
-            
+
             let source = event.dataTransfer.getData("text/plain");
             console.log("source = ");
             console.log(source);
 
             this.track.placeCard(DragAndDrop.dragPayload, this.idx);
-            
+            PLAYER_HAND.removeCard(DragAndDrop.dragPayload);
+
             if (event.preventDefault) { event.preventDefault(); } //prevents bubbling
         });
     }
@@ -85,7 +86,7 @@ class TimelineStep {
     *  changed. I'm just saving that here but it would be probably better
     *  to change all elements at once with the Node.style property.
     *  @param {number} widthInPixels new width for all TimelineStep nodes.
-    * 
+    *
     */
     static resizeAllInCss(widthInPixels){
         let rules = document.styleSheets[0].cssRules;

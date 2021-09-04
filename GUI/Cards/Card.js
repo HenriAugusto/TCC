@@ -157,4 +157,18 @@ class Card {
     #resetStyle(){
         this.cardDiv.classList.remove("highlighted");
     }
+
+    /**
+     * Creates an snapshot containing all the information needed
+     * to recreate this object later. Meant to be used with {@link SaveLoad}.
+     * @returns {Object} snapshot
+     */
+    save(){
+        return {
+            title: this.title,
+            type: this.type,
+            index: this.index,
+            class: this.constructor.name
+        }
+    }
 }

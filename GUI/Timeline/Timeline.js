@@ -5,7 +5,7 @@
 class Timeline {
     node;
     tracks = {};
-    trackId = 0;
+    trackCounter = 0;
     steps = 64*4*4;
     snap = 16;
 
@@ -16,19 +16,20 @@ class Timeline {
     constructor(node){
         this.node = node;
         this.node.classList.add("timeline");
-        this.addTrack();
-        this.addTrack();
-        this.addTrack();
     }
 
     /**
-     * Add a track to the timeline. 
+     * Add a track to the timeline.
      */
-    addTrack(){
-        this.tracks[this.trackId] = new Track(
-            this, this.trackId, "(Unnamed Track)", this.steps
+    addEmptyTrack(){
+        this.tracks[this.trackCounter] = new Track(
+            this, this.trackCounter, "(Unnamed Track)", this.steps
             );
-        this.trackId++;
+        this.trackCounter++;
+    }
+
+    addTrack(track){
+        this.tracks[this.trackCounter++] = track;
     }
 
     /**
@@ -64,7 +65,7 @@ class Timeline {
                         //adjust the resulting sequence length
                         let totalSeqLength = Math.max(seq.totalQuantizedSteps, newNote.quantizedEndStep);
                         seq.totalQuantizedSteps = totalSeqLength;
-                    }                
+                    }
                 }
             }
         }
@@ -79,5 +80,39 @@ class Timeline {
     play(){
         let seq = this.timelineToNoteSequence();
         Playback.play(seq);
+    }
+
+    /**
+     * Creates an snapshot containing all the information needed
+     * to recreate this object later. Meant to be used with {@link SaveLoad}.
+     * @returns {Object} snapshot
+     */
+     save(){
+        let tl = {
+            tracks: [],
+            trackCounter: this.trackCounter,
+            steps: this.steps,
+            snap: this.snap
+        }
+        for(let track of Object.values(this.tracks)){
+            tl.tracks.push(track.save());
+        }
+        return tl;
+    }
+
+    /**
+     * Reconstructs a object from it snapshot. Meant to be used with {@link SaveLoad}.
+     * @static
+     * @param {Object} obj - As returned from the {@link save()} method.
+     * @returns
+     */
+    static load(obj, element){
+        let tl = new Timeline(element);
+        console.log(obj)
+        obj.tracks.forEach( track => {
+            tl.addTrack(Track.load(track, tl));
+        });
+        console.log(tl.tracks);
+        return tl;
     }
 }
