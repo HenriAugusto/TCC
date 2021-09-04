@@ -120,6 +120,8 @@ class InterpolationCard extends SequenceCard {
      * @returns
      */
     static load(obj){
-        return new InterpolationCard(obj.seq1, obj.seq2, obj.steps, obj.title);
+        let ic = new InterpolationCard(obj.seq1, obj.seq2, obj.steps, obj.title);
+        ic.setNoteSequence(obj.noteSequence);
+        return ic;
     }
 }

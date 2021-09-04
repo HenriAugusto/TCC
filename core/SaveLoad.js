@@ -5,7 +5,8 @@ class SaveLoad {
 
     static save(){
         let game = {
-            playerHand: PLAYER_HAND.save()
+            playerHand: PLAYER_HAND.save(),
+            timeline: MAIN_TIMELINE.save()
         }
         let gameJSON = JSON.stringify(game, null, 2);
         SaveLoad.download(gameJSON, "game.json");
@@ -18,6 +19,10 @@ class SaveLoad {
         let contentJSON = await file.text();
         let game = JSON.parse(contentJSON);
         PLAYER_HAND = CardHolder.load(game.playerHand, PLAYER_HAND.div);
+        while (MAIN_TIMELINE.node.firstChild) {
+            MAIN_TIMELINE.node.removeChild(MAIN_TIMELINE.node.firstChild);
+        }
+        MAIN_TIMELINE = Timeline.load(game.timeline, MAIN_TIMELINE.node);
     }
 
     static download(JSONString, filename){
