@@ -13,6 +13,7 @@ class InterpolationCard extends SequenceCard {
     seq1;
     seq2;
     steps;
+    selectedSequence;
 
     /**
      * Constructs an InterpolationCard
@@ -96,7 +97,9 @@ class InterpolationCard extends SequenceCard {
         let seqs = await VAE.interpolateSequences([seq1, seq2], steps);
         this.interpolatedSequences = seqs;
         this.setNoteSequence(seqs[Math.round(steps/2)]);
+        this.selectedSequence = Math.round(steps/2);
         this.slider.disabled = false;
+        if(this.selectedSequence) this.selectInterpolatedSequence(this.selectedSequence);
     }
 
     /**
@@ -109,6 +112,7 @@ class InterpolationCard extends SequenceCard {
         s.seq1 = this.seq1;
         s.seq2 = this.seq2;
         s.steps = this.steps;
+        s.selectedSequence = this.selectedSequence;
         s.interpolatedSequences = this.interpolatedSequences;
         return s;
     }
@@ -122,6 +126,7 @@ class InterpolationCard extends SequenceCard {
     static load(obj){
         let ic = new InterpolationCard(obj.seq1, obj.seq2, obj.steps, obj.title);
         ic.setNoteSequence(obj.noteSequence);
+        ic.selectedSequence = obj.selectedSequence;
         return ic;
     }
 }
