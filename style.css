@@ -131,3 +131,42 @@
     opacity: 1.5;
     box-shadow: 0 0.9vmin 0.5vmin 0.2vmin #3a008e78;
 }
+
+/* ----- buttons ----- */
+
+.loadBtn {
+    width: 8.09vw;
+    height: 5vh;
+    background: #6a009b;
+    font-weight: bold;
+    bottom: 10px;
+    left: 40vw;
+    color: white;
+}
+
+.saveBtn {
+    width: 8.09vw;
+    height: 5vh;
+    background: #ff5dff;
+    font-weight: bold;
+    bottom: 10px;
+    right: 40vw;
+}
+
+#mainMenu {
+    height: 10vh;
+    width: 33vw;
+    position: fixed;
+    left: 33vw;
+    bottom: -7vh;
+    font-size: 3vh;
+    font-weight: bold;
+    text-align: center;
+    outline: solid black 1px;
+    display: flex;
+    flex-direction: column;
+}
+
+#mainMenu:hover {
+    bottom: 0;
+}
