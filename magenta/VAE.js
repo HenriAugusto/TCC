@@ -10,7 +10,7 @@ class VAE {
      * @returns {Promise<INoteSequence>} NoteSequence
      */
     static async getNew4BarMelody(){
-        return VAE.requestSamples("melody", 4).then( (seqs) => seqs[0] );
+        return VAE.requestSamples("melody", 4, 1).then( (seqs) => seqs[0] );
     }
 
     /**
@@ -18,7 +18,7 @@ class VAE {
      * @returns {Promise<INoteSequence>} NoteSequence
      */
     static async getNew4BarDrums(){
-        return VAE.requestSamples("drums", 4).then( (seqs) => seqs[0] );
+        return VAE.requestSamples("drums", 4, 1).then( (seqs) => seqs[0] );
     }
 
     /**
