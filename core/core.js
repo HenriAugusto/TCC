@@ -27,7 +27,7 @@ async function initialize(){
     await VAE.initializeWorker();
     await RNN.initializeWorker(true);
     await VAE_MidiMe.initializeWorker(true);
-    for(let i = 0; i<60; i++){
+    for(let i = 0; i<Game.deckSize; i++){
         let card = await CardGenerator.getCard();
         MAIN_DECK.addCardsToTop(card);
     }
