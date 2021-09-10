@@ -39,15 +39,12 @@ async function initialize(){
      * are capable of generating melodies. To speed up initialization
      * we initialize them first and only then initialize the rest */
     await VAE.initializeWorker();
-    let seqs = await VAE.requestSamples("melody", 4, 10);
-    seqs.forEach( seq => {
-        console.log("card generated");
-        MAIN_DECK.addCardsToTop(new SequenceCard(seq, "Deck", "Melody"))
-    });
     await RNN.initializeWorker(true);
     await VAE_MidiMe.initializeWorker(true);
-
-    //VAE_MidiMe.initializeWorker();
+    for(let i = 0; i<60; i++){
+        let card = await CardGenerator.getCard();
+        MAIN_DECK.addCardsToTop(card);
+    }
 }
 
 window.addEventListener("load", initialize);
