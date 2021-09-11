@@ -2,9 +2,11 @@
  * Class used to save and load game states.
  */
 class SaveLoad {
+    static get GAME_SERIALIZATION_VERSION() { return "0.1"; } //major.bugfix
 
     static save(){
         let game = {
+            serializationVersion: SaveLoad.GAME_SERIALIZATION_VERSION,
             gameSettings: Game.save(),
             playerHand: PLAYER_HAND.save(),
             timeline: MAIN_TIMELINE.save()
