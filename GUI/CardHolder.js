@@ -45,6 +45,10 @@ class CardHolder {
         card.cardDiv.remove();
     }
 
+    getNumberOfCards(){
+        return this.cards.length;
+    }
+
     /**
      * Remove all cards from the holder
      * @returns {Card[]} All the removed cards

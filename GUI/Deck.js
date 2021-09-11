@@ -125,7 +125,10 @@ class Deck {
      */
     drawCardsToPlayersHand(n=1){
         if(!this.cards.length) return;
-        PLAYER_HAND.addCards( this.drawCardFromTop() );
+        for(let i=0; i<n; i++){
+            if(PLAYER_HAND.getNumberOfCards() >= Game.maxHandSize) return;
+            PLAYER_HAND.addCards( this.drawCardFromTop() );
+        }
     }
 
     /**
