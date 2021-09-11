@@ -1,12 +1,4 @@
 class CardGenerator {
-    static weights = {
-        "MelodyGenerator": 1,
-        "Melody": 1,
-        "Drums": 1,
-        "DrumsGenerator": 1,
-        "EditorCard": 1,
-        "ContinueCard": 1
-    }
 
     static async getCard(){
         let cardType = CardGenerator.pickType();
@@ -40,8 +32,8 @@ class CardGenerator {
 
     static pickType(){
         let lottery = [];
-        for (let t in CardGenerator.weights){
-            for (let i = 0; i < CardGenerator.weights[t]; i++){
+        for (let t in Game.weights){
+            for (let i = 0; i < Game.weights[t]; i++){
                 lottery.push(t);
             }
         }
