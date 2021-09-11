@@ -16,6 +16,29 @@ class Timeline {
     constructor(node){
         this.node = node;
         this.node.classList.add("timeline");
+        this.addPlaybackControls();
+    }
+
+    addPlaybackControls(){
+        let playbackControls = document.createElement("div");
+            playbackControls.classList.add("playbackControlsContainer");
+        let stopBtn = document.createElement("button");
+        let playBtn = document.createElement("button");
+
+        stopBtn.innerText = "■";
+        playBtn.innerText = "►";
+
+        stopBtn.classList.add("timelinePlaybackBtn")
+        playBtn.classList.add("timelinePlaybackBtn");
+
+        stopBtn.classList.add("timelinePlaybackStop")
+        playBtn.classList.add("timelinePlaybackPlay");
+
+        stopBtn.addEventListener("click", () => Playback.stop() );
+        playBtn.addEventListener("click", () => MAIN_TIMELINE.play() );
+
+        playbackControls.append(stopBtn, playBtn);
+        this.node.append(playbackControls);
     }
 
     /**
