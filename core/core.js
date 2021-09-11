@@ -21,33 +21,16 @@ async function initialize(){
 
     EditorCard.pianoEditor = new PianoEditor();
 
-    try {
-        await new Promise( (r) => setTimeout( () => r(), 150) );
-        let editedSeq = await EditorCard.pianoEditor.edit(MELODY_1);
-        let editedCard = new SequenceCard(editedSeq, "EDITED", "Melody");
-        PLAYER_HAND.addCards(editedCard);
-    } catch (e){
-        console.log("catch user cancel action");
-    }
-
-
-    /*editedSeq = await EditorCard.pianoEditor.edit(DRUM_SEQ_1);
-    editedCard = new SequenceCard(editedSeq, "EDITED 2", "Drums");
-    PLAYER_HAND.addCards(editedCard);*/
-
     /* The first models we are gonna need are the ones that
      * are capable of generating melodies. To speed up initialization
      * we initialize them first and only then initialize the rest */
     await VAE.initializeWorker();
-    let seqs = await VAE.requestSamples("melody", 4, 10);
-    seqs.forEach( seq => {
-        console.log("card generated");
-        MAIN_DECK.addCardsToTop(new SequenceCard(seq, "Deck", "Melody"))
-    });
     await RNN.initializeWorker(true);
     await VAE_MidiMe.initializeWorker(true);
-
-    //VAE_MidiMe.initializeWorker();
+    for(let i = 0; i<Game.deckSize; i++){
+        let card = await CardGenerator.getCard();
+        MAIN_DECK.addCardsToTop(card);
+    }
 }
 
 window.addEventListener("load", initialize);

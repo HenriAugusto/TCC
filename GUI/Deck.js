@@ -20,7 +20,6 @@ class Deck {
         if(cards){
             this.addCardsToTop(cards);
         }
-        this.drawCardEventListener = this.drawCardsToPlayersHand.bind(this);       
     }
 
     addDeckIcon(element){
@@ -33,6 +32,7 @@ class Deck {
             this.div.append(card);
         }
         element.append(this.div);
+        this.drawCardEventListener = (ev) => this.drawCardsToPlayersHand();
         this.div.addEventListener("click", this.drawCardEventListener );
         if(this.cards.length){
             this.enable();
@@ -43,7 +43,7 @@ class Deck {
 
     /**
      * Adds a single Card or an array of Cards on TOP of the deck
-     * 
+     *
      * @param {Card|Card[]} cards A Card or an array of Cards to add
      * @returns {number} the resulting number of cards in the deck
      */
@@ -55,7 +55,7 @@ class Deck {
 
     /**
      * Adds a single Card or an array of Cards on the BOTTOM of the deck
-     * 
+     *
      * @param {Card|Card[]} cards A Card or an array of Cards to add
      * @returns {number} the resulting number of cards in the deck
      */
@@ -64,7 +64,7 @@ class Deck {
         if(!this.cards.length) this.enable();
         return this.cards.push(...cards);
     }
-    
+
     /**
      * Utility method that Ddaws a single Card from the TOP of the deck.
      * @returns {Card|null} The drawn Card or null if the deck is empty.
@@ -125,7 +125,10 @@ class Deck {
      */
     drawCardsToPlayersHand(n=1){
         if(!this.cards.length) return;
-        PLAYER_HAND.addCards( this.drawCardFromTop() );
+        for(let i=0; i<n; i++){
+            if(PLAYER_HAND.getNumberOfCards() >= Game.maxHandSize) return;
+            PLAYER_HAND.addCards( this.drawCardFromTop() );
+        }
     }
 
     /**
