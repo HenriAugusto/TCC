@@ -1,5 +1,5 @@
 class Game {
-    static maxHandSize = 10;
+    static maxHandSize = 20;
     static deckSize = 60;
     static weights = {
         "Melody": 20,
