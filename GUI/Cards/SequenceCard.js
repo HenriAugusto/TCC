@@ -38,6 +38,30 @@ class SequenceCard extends Card {
         this.setNoteSequence(noteSequence);
     }
 
+    showVisualizer(){ this.visualizerCanvas.style.display = ""; }
+
+    hideVisualizer(){ this.visualizerCanvas.style.display = "none"; }
+
+    showBtn(){ this.cardDiv.querySelector("button").style.display = ""; }
+
+    hideBtn(){ this.cardDiv.querySelector("button").style.display = "none"; }
+
+    showTitle(){ this.cardDiv.querySelector("p").style.display = ""; }
+
+    hideTitle(){ this.cardDiv.querySelector("p").style.display = "none"; }
+
+    showUI(){
+        this.showVisualizer();
+        this.showBtn();
+        this.showTitle();
+    }
+
+    hideUI(){
+        this.hideVisualizer();
+        this.hideBtn();
+        this.hideTitle();
+    }
+
     /**
      * Makes the SequenceCard contain the given {@link INoteSequence}.
      * @param {INoteSequence} seq - The new {@link INoteSequence} to be contained in the card.
@@ -67,20 +91,17 @@ class SequenceCard extends Card {
      */
     async receiveDroppedCard(card){
         console.log("receiving card");
-        if(card instanceof SequenceCard){
-            let interpCard = new InterpolationCard(card.noteSequence,
-                this.noteSequence, 16, "Interpolated");
-            PLAYER_HAND.addCards(interpCard);
+        if(card instanceof ContinueCard){
+            card.requestContinuation(this.noteSequence);
         } else if(card instanceof EditorCard){
             let seq = await EditorCard.pianoEditor.edit(this.noteSequence);
             console.log("RECEIVED SEQUENCE FROM EDITOR PROMISE");
             console.log(seq);
             this.setNoteSequence(seq);
-        } else if(card instanceof ContinueCard){
-            let cont = await RNN.continuationRequest(this.noteSequence, this.noteSequence.totalQuantizedSteps);
-            let card = new SequenceCard(cont, "Continuation",
-                                        SequenceUtils.isDrumSequence(cont) ? "Drums" : "Melody" );
-            PLAYER_HAND.addCards(card);
+        } else if(card instanceof SequenceCard){
+            let interpCard = new InterpolationCard(card.noteSequence,
+                this.noteSequence, 16, "Interpolated");
+            PLAYER_HAND.addCards(interpCard);
         }
     }
 
