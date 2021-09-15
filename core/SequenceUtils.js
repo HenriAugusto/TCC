@@ -30,4 +30,12 @@ class SequenceUtils {
             return s.every( seq => seq.notes.every( note => note.isDrum) );
         }
     }
+
+    static getEmtpySequence(){
+        return {
+            notes: [],
+            quantizationInfo: {stepsPerQuarter: 4},
+            totalQuantizedSteps: 64
+          };
+    }
 }
