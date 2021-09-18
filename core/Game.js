@@ -2,10 +2,10 @@ class Game {
     static maxHandSize = 20;
     static deckSize = 60;
     static weights = {
-        "Melody": 20,
-        "Drums": 20,
-        "MelodyGenerator": 6,
-        "DrumsGenerator": 6,
+        "Melody": 3,
+        "Drums": 3,
+        "MelodyGenerator": 20,
+        "DrumsGenerator": 20,
         "EditorCard": 1,
         "ContinueCard": 10
     }
