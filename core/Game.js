@@ -7,7 +7,8 @@ class Game {
         "MelodyGenerator": 6,
         "DrumsGenerator": 6,
         "EditorCard": 1,
-        "ContinueCard": 10
+        "ContinueCard": 10,
+        "VariationsCard": 10
     }
 
     /**

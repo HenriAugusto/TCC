@@ -18,16 +18,25 @@
     circleSelector;
     circleRadius = 40;
 
-    constructor(seq, title){
+    /**
+     *
+     * @param {]} seq
+     * @param {*} title
+     * @param {*} deserializing - used to skip AI operations when loading the game
+     */
+    constructor(seq, title, deserializing=false){
         super(seq, title, "VariationsCard");
         this.originalSequence = seq;
-        this.getVariations(seq).then( () => {
-            this.initCircleSelector();
-        });
+        if(!deserializing){
+            this.getVariations(seq).then( () => {
+                this.initCircleSelector();
+            });
+        }
     }
 
     initCircleSelector(){
         let circleSel = document.createElement("div");
+        circleSel.classList.add("circleSelector");
         circleSel.style.backgroundColor = "rgb(255,255,255)";
         //circleSel.style.background = "radial-gradient(circle, rgba(157,6,164,1) 0%, rgba(255,255,255,1) 100%);";
         circleSel.style.borderStyle = "solid";
@@ -38,7 +47,7 @@
         circleSel.style.margin = "5% "+((100-this.circleRadius)/2)+"%";
         circleSel.style.borderRadius= "50%"; //make it a circle
 
-        
+
         this.cardDiv.appendChild( circleSel );
         //https://stackoverflow.com/questions/5445491/height-equal-to-dynamic-width-css-fluid-layout
         let dummy = document.createElement("div");
@@ -81,7 +90,7 @@
             let leg2 = y2-y1;
             return Math.hypot(leg1, leg2);
         }
-        
+
         function angleBetweenPoints(x1, y1, x2, y2){
             let leg1 = x2-x1;
             let leg2 = y2-y1;
@@ -100,17 +109,17 @@
         let centerY = Math.round( h/2 );
         let clickX = e.offsetX;
         let clickY = e.offsetY;
-        
+
         let distanceToCenter = distanceBetweenPoints(centerX, centerY, clickX, clickY);
 
         let angle = angleBetweenPoints(centerX, centerY, clickX, clickY);
-        
+
         if(distanceToCenter > radius){
             // outside the circle
             return;
         }
         let pointerRadius = Math.round(pointer.offsetWidth/2);
-        
+
         console.log("angle: "+angle);
         console.log("source pos: ["+circleX+", "+circleY+"]");
         console.log("dimensions: "+w+"x"+h);
@@ -170,5 +179,39 @@
         }
         console.log(this.variations);
     }
-    
+
+    /**
+     * Creates an snapshot containing all the information needed
+     * to recreate this object later. Meant to be used with {@link SaveLoad}.
+     * @returns {Object} snapshot
+     */
+     save(){
+        let s = super.save();
+        s.originalSequence = this.originalSequence;
+        s.variations = this.variations;
+        s.similarityDepths = this.similarityDepths;
+        s.variationsPerDepth = this.variationsPerDepth;
+        s.similarityMinimum = this.similarityMinimum;
+        s.similarityMaximum = this.similarityMaximum;
+        s.circleRadius = this.circleRadius;
+        return s;
+    }
+
+    /**
+     * Reconstructs a object from it snapshot. Meant to be used with {@link SaveLoad}.
+     * @static
+     * @param {Object} obj - As returned from the {@link save()} method.
+     * @returns
+     */
+    static load(obj){
+        let vc = new VariationsCard(obj.originalSequence, obj.title, true);
+        vc.variations = obj.variations;
+        vc.similarityDepths = obj.similarityDepths;
+        vc.variationsPerDepth = obj.variationsPerDepth;
+        vc.similarityMinimum = obj.similarityMinimum;
+        vc.similarityMaximum = obj.similarityMaximum;
+        vc.circleRadius = obj.circleRadius;
+        vc.initCircleSelector();
+        return vc;
+    }
 }
