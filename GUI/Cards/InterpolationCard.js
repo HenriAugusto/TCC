@@ -23,7 +23,7 @@ class InterpolationCard extends SequenceCard {
      * @param {string} title - Card's title
      * @public
      */
-    constructor(seq1, seq2, steps, title){
+    constructor(seq1, seq2, steps, title, skipGenerating=false){
         super(seq1, title, "MelodyInterpolator");
         this.seq1 = seq1;
         this.seq2 = seq2;
@@ -46,7 +46,7 @@ class InterpolationCard extends SequenceCard {
 
         sliderContainer.appendChild(this.slider);
         this.cardDiv.appendChild(sliderContainer);
-        this.requestInterpolations(seq1, seq2, steps);
+        if( !skipGenerating ) this.requestInterpolations(seq1, seq2, steps);
     }
 
     /**
@@ -54,7 +54,10 @@ class InterpolationCard extends SequenceCard {
      * @param {number} stepIndex - The index of the step in the interpolation.
      */
     selectInterpolatedSequence(i){
-        i = Math.max(0, i);        i = Math.min(this.interpolatedSequences.length-1, i);
+        i = Math.max(0, i);
+        i = Math.min(this.interpolatedSequences.length-1, i);
+        this.selectedSequence = i;
+        this.slider.value = i;
         this.setNoteSequence( this.interpolatedSequences[i] );
     }
 
@@ -99,7 +102,7 @@ class InterpolationCard extends SequenceCard {
         this.setNoteSequence(seqs[Math.round(steps/2)]);
         this.selectedSequence = Math.round(steps/2);
         this.slider.disabled = false;
-        if(this.selectedSequence) this.selectInterpolatedSequence(this.selectedSequence);
+        this.selectInterpolatedSequence(this.selectedSequence);
     }
 
     /**
@@ -124,9 +127,10 @@ class InterpolationCard extends SequenceCard {
      * @returns
      */
     static load(obj){
-        let ic = new InterpolationCard(obj.seq1, obj.seq2, obj.steps, obj.title);
+        let ic = new InterpolationCard(obj.seq1, obj.seq2, obj.steps, obj.title, true);
         ic.setNoteSequence(obj.noteSequence);
-        ic.selectedSequence = obj.selectedSequence;
+        ic.interpolatedSequences = obj.interpolatedSequences;
+        ic.selectInterpolatedSequence(obj.selectedSequence);
         return ic;
     }
 }
