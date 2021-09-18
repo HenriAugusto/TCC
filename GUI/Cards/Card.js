@@ -15,6 +15,7 @@ const CARD_TYPES = Object.freeze({
     "DrumsGenerator": "Drums Generator",
     "ContinueRNN": "Continue with RNN",
     "MelodyInterpolator": "Melody Interpolator",
+    "VariationsCard": "Variations Card",
     "EditorCard": "Editor Card",
     "ContinueCard": "Continue Card",
 });

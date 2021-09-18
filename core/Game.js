@@ -8,7 +8,8 @@ class Game {
         "MelodyGenerator": 20,
         "DrumsGenerator": 20,
         "EditorCard": 1,
-        "ContinueCard": 10
+        "ContinueCard": 10,
+        "VariationsCard": 10
     }
 
     static setName(str){

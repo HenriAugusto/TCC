@@ -40,6 +40,10 @@
     background-color: rgb(75 155 255);
 }
 
+.sequenceCard.VariationsCard {
+    background-color: #27a615;
+}
+
 .EditorCard {
     background-color: #00ff3e;
     display: flex;
