@@ -197,3 +197,8 @@
 #mainMenu:hover {
     bottom: 0;
 }
+
+#nameInput {
+    border: none;
+    font-size: 2rem;
+}

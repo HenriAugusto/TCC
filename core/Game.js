@@ -1,4 +1,5 @@
 class Game {
+    static name = "untitled";
     static maxHandSize = 20;
     static deckSize = 60;
     static weights = {
@@ -10,6 +11,10 @@ class Game {
         "ContinueCard": 10
     }
 
+    static setName(str){
+        Game.name = str;
+    }
+
     /**
     * Creates an snapshot containing all the information needed
     * to recreate this object later. Meant to be used with {@link SaveLoad}.
@@ -17,6 +22,7 @@ class Game {
     */
     static save(){
         return {
+            name: Game.name,
             maxHandSize: Game.maxHandSize,
             deckSize: Game.deckSize,
             weights: Game.weights
@@ -30,6 +36,7 @@ class Game {
      * @returns
      */
     static load(obj){
+        Game.name = obj.name;
         Game.maxHandSize = obj.maxHandSize;
         Game.deckSize = obj.deckSize;
         Game.weights = obj.weights;

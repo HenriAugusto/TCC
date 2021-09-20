@@ -12,7 +12,7 @@ class SaveLoad {
             timeline: MAIN_TIMELINE.save()
         }
         let gameJSON = JSON.stringify(game, null, 2);
-        SaveLoad.download(gameJSON, "game.json");
+        SaveLoad.download(gameJSON, Game.name+".json");
     }
 
     static async load(){
@@ -22,6 +22,7 @@ class SaveLoad {
         let contentJSON = await file.text();
         let game = JSON.parse(contentJSON);
         Game.load(game.gameSettings);
+        document.querySelector("#nameInput").value = Game.name;
         PLAYER_HAND = CardHolder.load(game.playerHand, PLAYER_HAND.div);
         while (MAIN_TIMELINE.node.firstChild) {
             MAIN_TIMELINE.node.removeChild(MAIN_TIMELINE.node.firstChild);
