@@ -3,9 +3,6 @@ import PianoEditor from '../SequenceEditors/PianoEditor/PianoEditor.js'
 async function initialize(){
     initGUI();
 
-    PLAYER_HAND.addCards( new VariationsCard(BEETH_9TH, "Beeth") );
-    PLAYER_HAND.addCards( new VariationsCard(DRUM_SEQ_3, "Dr") );
-
     EditorCard.pianoEditor = new PianoEditor();
 
     /* The first models we are gonna need are the ones that

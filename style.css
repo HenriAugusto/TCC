@@ -66,6 +66,16 @@
     transform: translate(13%, -1%) scale(2.2);
 }
 
+.VariationsCard {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.variationsCardIcon {
+    transform: translate(13%, -1%) scale(2.2);
+}
+
 .card.highlighted {
     border-style: dashed;
     border-color: #ff6a00;
@@ -205,4 +215,11 @@
 #nameInput {
     border: none;
     font-size: 2rem;
+}
+
+.tooltip {
+    background: #120023;
+    outline: white;
+    padding: 10px;
+    color: white;
 }

@@ -27,7 +27,7 @@ class CardGenerator {
                 return new DrumsGenerator(seq, "Drums");
             case "VariationsCard":
                 seq = Math.random()<=0.5 ? await VAE.getNew4BarMelody() : seq = await VAE.getNew4BarDrums();
-                return new VariationsCard(seq, "Variations");
+                return new VariationsCard("Variations");
             default:
                 throw new Error("Implement "+cardType+" in CardDealer.deal()");
         }
