@@ -54,7 +54,6 @@ export default class PianoEditor {
         this.createLanes();
 
         document.querySelector("body").prepend(this.div);
-        this.addKeyboardListeners();
     }
 
     createLanes(){
