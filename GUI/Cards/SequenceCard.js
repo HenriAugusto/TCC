@@ -93,6 +93,8 @@ class SequenceCard extends Card {
         console.log("receiving card");
         if(card instanceof ContinueCard){
             card.requestContinuation(this.noteSequence);
+        } else if(card instanceof VariationsCard){
+            card.requestVariations(this.noteSequence);
         } else if(card instanceof EditorCard){
             let seq = await EditorCard.pianoEditor.edit(this.noteSequence);
             console.log("RECEIVED SEQUENCE FROM EDITOR PROMISE");

@@ -55,6 +55,8 @@ class SaveLoad {
                 return ContinueCard.load(obj);
             case "InterpolationCard":
                 return InterpolationCard.load(obj);
+            case "VariationsCard":
+                return VariationsCard.load(obj);
             default:
                 throw new Error("SaveLoad.loadCard() error: wrong card class: "+obj.class);
         }
