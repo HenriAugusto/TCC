@@ -41,7 +41,7 @@
 }
 
 .sequenceCard.VariationsCard {
-    background-color: #27a615;
+    background-color: #87ed41;
 }
 
 .EditorCard {
@@ -73,7 +73,7 @@
 }
 
 .variationsCardIcon {
-    transform: translate(13%, -1%) scale(2.2);
+    transform: translate(3%, 0%) scale(2.2);
 }
 
 .card.highlighted {
