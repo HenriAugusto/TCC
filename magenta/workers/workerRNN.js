@@ -8,8 +8,8 @@
  importScripts("https://cdn.jsdelivr.net/npm/@magenta/music@^1.22.1/es6/core.js");
  importScripts("https://cdn.jsdelivr.net/npm/@magenta/music@^1.22.1/es6/music_rnn.js");
  importScripts("https://cdn.jsdelivr.net/npm/@tonaljs/tonal/browser/tonal.min.js");
- importScripts("/core/SequenceUtils.js");
- importScripts("/magenta/workers/workerUtils.js");
+ importScripts("../../core/SequenceUtils.js");
+ importScripts("workerUtils.js");
 
 /**
  * A 36-class onehot MelodyRNN model. Converted from http://download.magenta.tensorflow.org/models/basic_rnn.mag.

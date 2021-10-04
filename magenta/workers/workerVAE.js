@@ -7,8 +7,8 @@ importScripts("https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@2.8.6/dist/tf.min.j
 
 importScripts("https://cdn.jsdelivr.net/npm/@magenta/music@^1.22.1/es6/core.js");
 importScripts("https://cdn.jsdelivr.net/npm/@magenta/music@^1.22.1/es6/music_vae.js");
-importScripts("/core/SequenceUtils.js");
-importScripts("/magenta/workers/workerUtils.js");
+importScripts("../../core/SequenceUtils.js");
+importScripts("workerUtils.js");
 
 /**
  * A medium-sized 4-bar, 90-class onehot melody model. Quantized to 2-byte weights.
