@@ -8,6 +8,7 @@ class Timeline {
     trackCounter = 0;
     steps = 64*4*4;
     snap = 16;
+    timelineRuler;
 
     /**
      * Constructs a Timeline
@@ -17,6 +18,7 @@ class Timeline {
         this.node = node;
         this.node.classList.add("timeline");
         this.addPlaybackControls();
+        this.timelineRuler = new TimelineRuler(this);
     }
 
     addPlaybackControls(){

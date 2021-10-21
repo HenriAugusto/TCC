@@ -140,6 +140,24 @@
     background-color: blue;
 }
 
+.timelineRuler{
+    height: 40px;
+    display: flex;
+}
+
+.timelineRulerStep {
+    min-width: 8px;
+    background-color: rgb(32, 32, 32);
+}
+
+.timelineRulerStep.mouseOver {
+    background-color: rgb(255, 0, 0);
+}
+
+.timelineRulerStep.playhead {
+    background-color: rgb(0, 255, 0);
+}
+
 /* Those values were defined completely heuristically */
 /* https://jsfiddle.net/HenriAugusto/42z1thuv/42/ */
 .deckIcon {
