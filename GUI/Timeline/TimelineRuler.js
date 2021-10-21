@@ -1,6 +1,6 @@
 class TimelineRuler {
     timeline;
-    snap = 16;
+    snap = 4;
     playbackLoop;
 
     constructor(timeline){
@@ -16,7 +16,8 @@ class TimelineRuler {
         for(let i = 0; i < tl.steps; i++){
             let step = document.createElement("div");
                 step.classList.add("timelineRulerStep");
-            let snapStep = Math.floor(i/this.snap)*this.snap;
+                step.classList.add("mod16_"+(i % 16));
+                step.classList.add("mod64_"+(i % 64));
             let snapStep = Math.round(i/this.snap)*this.snap;
                 snapStep  = Math.min(tl.steps-1, snapStep);
             let pos = snapStep;
