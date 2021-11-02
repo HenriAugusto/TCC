@@ -49,7 +49,7 @@ class Deck {
      */
     addCardsToTop(cards){
         if(!Array.isArray(cards)) cards = [cards];
-        if(!this.cards.length) this.enable();
+        if(this.cards.length) this.enable();
         return this.cards.unshift(...cards);
     }
 
@@ -61,7 +61,7 @@ class Deck {
      */
     addCardsToBottom(cards){
         if(!Array.isArray(cards)) cards = [cards];
-        if(!this.cards.length) this.enable();
+        if(this.cards.length) this.enable();
         return this.cards.push(...cards);
     }
 
