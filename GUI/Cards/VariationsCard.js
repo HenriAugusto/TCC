@@ -111,6 +111,7 @@
     }
 
     async requestVariations(seq){
+        this.variations = [];
         for(let i=0; i<this.similarityDepths; i++){
             let similarity = this.similarityMaximum+(i/(this.similarityDepths-1)*(this.similarityMinimum-this.similarityMaximum));
             console.log("similarity: "+similarity);
