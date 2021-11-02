@@ -17,4 +17,45 @@ class SequenceUtils {
             return seq;
         }
     }
+
+    /**
+     * Checks if one or more sequences only contains drum notes.
+     * @param {INoteSequence|INoteSequence[]}} A sequence or an array of sequences
+     * @returns {boolean} If the sequence only have notes with the `isDrum` property
+     */
+    static isDrumSequence(s){
+        if( !Array.isArray(s) ){
+            return s.notes.every( note => note.isDrum );
+        } else {
+            return s.every( seq => seq.notes.every( note => note.isDrum) );
+        }
+    }
+
+    static getEmtpySequence(){
+        return {
+            notes: [],
+            quantizationInfo: {stepsPerQuarter: 4},
+            totalQuantizedSteps: 64
+          };
+    }
+
+    /**
+     * Given a NoteSequence returns another sequence starting at the specified
+     * position of the original
+     * @param {INoteSequence} seq
+     * @param {number} start
+     * @returns {INoteSequence}
+     */
+    static startingAt(seq, start){
+        let out = mm.sequences.clone(seq);
+        out.notes = out.notes.filter( note => {
+            return note.quantizedStartStep >= start;
+        });
+        out.notes.forEach( note => {
+            note.quantizedStartStep -= start;
+            note.quantizedEndStep -= start;
+        });
+        out.totalQuantizedSteps -= start;
+        return out;
+    }
 }

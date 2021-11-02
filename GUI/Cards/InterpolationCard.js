@@ -6,10 +6,14 @@
 class InterpolationCard extends SequenceCard {
     /**
      * @public
-     * @property {[INoteSequence]} InterpolationCard - Array of {@link InoteSequence}s
+     * @property {[INoteSequence]} interpolatedSequences - Array of {@link InoteSequence}s
      */
-    InterpolationCard;
+    interpolatedSequences;
     slider;
+    seq1;
+    seq2;
+    steps;
+    selectedSequence;
 
     /**
      * Constructs an InterpolationCard
@@ -19,9 +23,12 @@ class InterpolationCard extends SequenceCard {
      * @param {string} title - Card's title
      * @public
      */
-    constructor( seq1, seq2, steps,  title){
+    constructor(seq1, seq2, steps, title, skipGenerating=false){
         super(seq1, title, "MelodyInterpolator");
-        
+        this.seq1 = seq1;
+        this.seq2 = seq2;
+        this.steps = steps;
+
         let sliderContainer = document.createElement("div");
         this.slider = document.createElement("input");
         this.slider.setAttribute("type", "range");
@@ -30,35 +37,16 @@ class InterpolationCard extends SequenceCard {
         this.slider.setAttribute("value", Math.round(steps/2));
         this.slider.classList.add("interpolationSlider");
         this.#setSliderEventHandlers(this.slider);
-            
+
         let thisCard = this;
         this.slider.oninput = function() {
             let int = Math.round( this.value );
             thisCard.selectInterpolatedSequence( int );
         }
-        
+
         sliderContainer.appendChild(this.slider);
         this.cardDiv.appendChild(sliderContainer);
-
-        this.interpolateSequences(seq1, seq2, steps).then( (seqs) => {
-            this.InterpolationCard = seqs;
-            this.setNoteSequence(seqs[Math.round(steps/2)]);
-        });
-    }
-
-    /**
-     * Usies MusicVAE to interpolate between two given sequences.
-     * @async
-     * @param {INoteSequence} seq1 - First NoteSequence
-     * @param {InoteSequence} seq2 - Second NoteSequence
-     * @param {number} n - number of interpolation steps, including the two originals.
-     * @returns {[INoteSequence]}
-     */
-    async interpolateSequences(seq1, seq2, n=4){      
-        let seq1_quantized = SequenceUtils.quantizeIfNeeded( seq1, 4);
-        let seq2_quantized = SequenceUtils.quantizeIfNeeded( seq2, 4);
-        var InterpolationCard = await music_vae_mel_4bar_q2.interpolate([seq1_quantized, seq2_quantized], n, vae_temperature);
-        return InterpolationCard;
+        if( !skipGenerating ) this.requestInterpolations(seq1, seq2, steps);
     }
 
     /**
@@ -67,12 +55,13 @@ class InterpolationCard extends SequenceCard {
      */
     selectInterpolatedSequence(i){
         i = Math.max(0, i);
-        i = Math.min(this.InterpolationCard.length-1, i);
-        console.log("selecting interpolated sequence: "+i);
-        this.setNoteSequence( this.InterpolationCard[i] );
+        i = Math.min(this.interpolatedSequences.length-1, i);
+        this.selectedSequence = i;
+        this.slider.value = i;
+        this.setNoteSequence( this.interpolatedSequences[i] );
     }
 
-    /** 
+    /**
      * Since our slider will be inside a draggable container, the whole card would be
      * dragged with it when interacting with the slider. To solve that we must
      * temporarily set the draggable attribute to false while changing the slider and
@@ -97,5 +86,51 @@ class InterpolationCard extends SequenceCard {
                 }
                 }, {once:true});
         });
+    }
+
+    /**
+     * Requests MusicVAE for interpolations
+     * @async
+     * @param {NoteSequence} seq1
+     * @param {NoteSequence} seq2
+     * @param {number} steps - How much steps in the interpolation, counting the original sequences
+     */
+    async requestInterpolations(seq1, seq2, steps){
+        this.slider.disabled = true;
+        let seqs = await VAE.interpolateSequences([seq1, seq2], steps);
+        this.interpolatedSequences = seqs;
+        this.setNoteSequence(seqs[Math.round(steps/2)]);
+        this.selectedSequence = Math.round(steps/2);
+        this.slider.disabled = false;
+        this.selectInterpolatedSequence(this.selectedSequence);
+    }
+
+    /**
+     * Creates an snapshot containing all the information needed
+     * to recreate this object later. Meant to be used with {@link SaveLoad}.
+     * @returns {Object} snapshot
+     */
+    save(){
+        let s = super.save();
+        s.seq1 = this.seq1;
+        s.seq2 = this.seq2;
+        s.steps = this.steps;
+        s.selectedSequence = this.selectedSequence;
+        s.interpolatedSequences = this.interpolatedSequences;
+        return s;
+    }
+
+    /**
+     * Reconstructs a object from it snapshot. Meant to be used with {@link SaveLoad}.
+     * @static
+     * @param {Object} obj - As returned from the {@link save()} method.
+     * @returns
+     */
+    static load(obj){
+        let ic = new InterpolationCard(obj.seq1, obj.seq2, obj.steps, obj.title, true);
+        ic.setNoteSequence(obj.noteSequence);
+        ic.interpolatedSequences = obj.interpolatedSequences;
+        ic.selectInterpolatedSequence(obj.selectedSequence);
+        return ic;
     }
 }

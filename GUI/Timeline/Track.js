@@ -40,7 +40,7 @@ class Track {
         this.node.classList.add("track");
         for(let i = 0; i < this.nSteps; i++){
             this.steps.push( new TimelineStep(this, i) );
-        }      
+        }
         this.timeline.node.appendChild(this.node);
     }
 
@@ -79,17 +79,17 @@ class Track {
          Cards */
         let leftOverlap = false;
         let rightOverlap = false;
-        /* Do exactly two passes, because if the sequence overlaps another, 
+        /* Do exactly two passes, because if the sequence overlaps another,
          * say, from the left, after adjusting it's position it might
          * overlap another sequence from the right.
-         */ 
+         */
         let movedLeft = false; //those are used to avoid the same adjustment on the 2nd pass
         let movedRight = false;
         for( let pass=0; pass<=1; pass++){
             for(let key in this.cards){
                 let testLeft = parseInt(key, 10);
                 let testRight = testLeft+this.cards[key].noteSequence.totalQuantizedSteps-1;
-                
+
                 leftOverlap = leftOverlap || left < testRight && left >= testLeft;
                 if(leftOverlap && !movedRight){
                     console.log("MOVING RIGHT");
@@ -111,11 +111,11 @@ class Track {
                     continue;
                 }
                 // If the Card would overlap another one entirely
-                if(    left  <= testLeft 
+                if(    left  <= testLeft
                     && left  <= testRight
                     && right >= testLeft
                     && right >= testRight){
-                        throw new Error("Can't place sequence");            
+                        throw new Error("Can't place sequence");
                     }
             }
         }
@@ -127,7 +127,7 @@ class Track {
         if(left <0 || right > this.nSteps-1){
             throw new Error("Can't place sequence");
         }
-        
+
         return {
             left: left,
             right: right
@@ -141,19 +141,19 @@ class Track {
      * @returns {boolean} - if the NoteSequence can be placed
      */
     previewCard(card, position){
-        
+
         this.unhighlightAllSteps();
 
         let finalPos;
         try {
-            finalPos = this.positionNoteSequence(card.noteSequence, position);    
+            finalPos = this.positionNoteSequence(card.noteSequence, position);
         } catch (error) {
             console.log("Can't place sequence (preview)");
             return false;
         }
 
         let left = finalPos.left;
-        let right = finalPos.right;        
+        let right = finalPos.right;
         for(let i=left; i<=right; ++i){
             this.highlightStep(i);
         }
@@ -170,15 +170,14 @@ class Track {
         this.unhighlightAllSteps();
         let finalPos;
         try {
-            finalPos = this.positionNoteSequence(card.noteSequence, centeredPosition);    
+            finalPos = this.positionNoteSequence(card.noteSequence, centeredPosition);
         } catch (error) {
             return false;
         }
         this.cards[finalPos.left] = card;
-        console.log(this.cards);
 
         let startTimelineStep = this.steps[finalPos.left];
-        
+
         let canvas = document.createElement("canvas");
         startTimelineStep.node.appendChild( canvas );
         let vis = new mm.PianoRollCanvasVisualizer( card.noteSequence, canvas );
@@ -195,10 +194,9 @@ class Track {
         canvas.setAttribute("card", card.index);
 
         canvas.addEventListener("click", () => {
-            card.cardDiv.style.display = null;
+            PLAYER_HAND.addCards(card);
             this.removeCardInPosition(finalPos.left);
         });
-        card.cardDiv.style.display = "none";
         return true;
     }
 
@@ -229,6 +227,45 @@ class Track {
         for(let h = 0; h<highlighted.length; h++){
             highlighted[h].classList.remove("highlighted");
         }
+    }
+
+    /**
+     * Creates an snapshot containing all the information needed
+     * to recreate this object later. Meant to be used with {@link SaveLoad}.
+     * @returns {Object} snapshot
+     */
+     save(){
+        let t = {
+            description: this.description,
+            nSteps: this.nSteps,
+            index: this.index,
+            cards: {}
+        }
+        for(let startStep in this.cards){
+            let card = this.cards[startStep];
+            t.cards[startStep] = card.save();
+        }
+        return t;
+    }
+
+    /**
+     * Reconstructs a object from it snapshot. Meant to be used with {@link SaveLoad}.
+     * @static
+     * @param {Object} obj - As returned from the {@link save()} method.
+     * @returns
+     */
+    static load(obj, timeline){
+        let track = new Track(timeline, timeline.trackCounter++, obj.description, obj.nSteps);
+        for(let startStep in obj.cards){
+            let cardObj = obj.cards[startStep];
+            track.placeCard(
+                SaveLoad.loadCard(cardObj),
+                Math.round(
+                    parseInt(startStep)+parseInt(cardObj.noteSequence.totalQuantizedSteps)/2
+                    )
+            );
+        }
+        return track;
     }
 
 }

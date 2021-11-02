@@ -1,0 +1,248 @@
+/* --- Editor UI --- */
+
+.pianoEditorBkg {
+    width: 100vw;
+    height: 100vh;
+    background-color: black;
+    opacity: 0.8;
+    position: fixed;
+    z-index: 1;
+}
+
+.pianoEditorWindow {
+    width: 92vw;
+    height: 92vh;
+    background-color: magenta;
+    position: fixed;
+    margin: 4vh 4vw;
+    overflow: auto;
+    z-index: 2;
+}
+
+.pianoEditorMenu {
+    position: sticky;
+    top: 0;
+	left: 0;
+    z-index: 4;
+    background: #251a2b;
+    padding: 0.5vmin 1vmin;
+}
+
+.pianoEditorBtn {
+    padding: 0.5vmin;
+    color: white;
+    background-color: rgb(255, 71, 255);
+    margin: 0.33%;
+    font-weight: bold;
+    font-size: 1rem;
+}
+
+.pianoEditorBtn.applyBtn {
+    background-color: rgb(0, 204, 17);
+}
+
+.pianoEditorBtn.cancelBtn {
+    background-color: rgb(235, 43, 43);
+}
+
+.pianoEditorBtn.stopBtn {
+    background-color: black;
+}
+
+/* --- Note Lane --- */
+
+.noteLane {
+	width: 81vw;
+	height: 3vh;
+	border-color: magenta;
+	border-width: 1px;
+	position: relative;
+	display: flex;
+}
+
+.laneBkg {
+	background-color: green;
+	height: 100%;
+	width: 100%;
+	position: absolute;
+	left: 10vw;
+	border: solid black 1px;
+}
+
+.C.laneBkg, .D.laneBkg, .E.laneBkg, .F.laneBkg, .G.laneBkg, .A.laneBkg, .B.laneBkg {
+	background-color: #aaaaaa;
+}
+
+.Db.laneBkg, .Eb.laneBkg, .Gb.laneBkg, .Ab.laneBkg, .Bb.laneBkg {
+	background-color: #666666;
+}
+
+/* --- Piano Keys --- */
+
+.pianoKey {
+    width: 10vw;
+    height: 100%;
+	box-sizing: border-box;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 1%;
+    font-family: "Lucida Handwriting", cursive, serif;
+	user-select: none;
+}
+
+.whiteKey {
+    border: black solid 1px;
+	background-color: white;
+	z-index: 2;
+}
+
+.blackKey {
+	background-color: black;
+	width: 6vw;
+	z-index: 3;
+    margin: 0 4vw 0 0;
+}
+
+.pianoKeyStickyContainer {
+	position: sticky;
+	left: 0;
+	height: 100%;
+	z-index: 2;
+}
+
+.pianoKeyStickyContainer.blackKey {
+	z-index: 3;
+}
+
+.E.pianoKey, .B.pianoKey {
+	position: relative;
+	height: 150%;
+}
+
+.D.pianoKey, .G.pianoKey, .A.pianoKey {
+	position: relative;
+	height: 200%;
+	top: -50%;
+}
+
+.C.pianoKey, .F.pianoKey {
+	position: relative;
+	height: 150%;
+	top: -50%;
+}
+
+/* Prevents selection of the "C#" text on the key */
+.pianoKey.whiteKey.C {
+    user-select: none;
+}
+
+/* Piano Keys highlighting */
+
+.whiteKey.highlighted {
+	border: black solid 3px;
+	background-color: #8b0ddf;
+    color: white;
+}
+
+.blackKey.highlighted {
+	border: black solid 3px;
+	background-color: #8b0ddf;
+    color: white;
+}
+
+.whiteKey.playing {
+	border: black solid 3px;
+	background-color: #0ddf4c;
+    color: white;
+}
+
+.blackKey.playing {
+	border: black solid 3px;
+	background-color: #0ddf4c;
+    color: white;
+}
+
+/* Adjustements for when the key is the lowest one on the piano rolll */
+
+.pianoKey.bottomKey.D, .pianoKey.bottomKey.G, .pianoKey.bottomKey.A, .pianoKey.bottomKey.C, .pianoKey.bottomKey.F {
+	height: 150%;
+	top: -50%;
+}
+
+.pianoKey.bottomKey.E, .pianoKey.bottomKey.B {
+	height: 100%;
+	top: 0;
+}
+
+/* Adjustements for when the key is the highest one on the piano rolll */
+
+.pianoKey.topKey.C, .pianoKey.topKey.F {
+	height: 100%;
+	top: 0;
+}
+
+.pianoKey.topKey.D, .pianoKey.topKey.G, .pianoKey.topKey.A {
+	height: 150%;
+	top: 0;
+}
+
+/* --- Lane Step --- */
+
+.laneStepsContainer {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 10vw;
+    display: flex;
+}
+
+.laneStep {
+	user-select: none; /* prevents some weird dragging */
+	display: grid;
+}
+
+.laneStep.preview {
+    background-color: #d8148d;
+}
+
+.laneStepSeparator {
+	width: 0;
+	outline: #2b2b2b solid 1px;
+}
+
+.laneStepSeparator.mod4_3 {
+	outline: #353535 solid 3px;
+}
+
+.laneStepSeparator.mod16_15 {
+	outline: black solid 3px;
+}
+
+/* --- Notes --- */
+
+.pianoEditorNote {
+	background-color: magenta;
+	height: 100%;
+	box-sizing: border-box;
+	border: solid 1px black;
+	position: relative; /* necessary for z-index: */
+	z-index: 1;
+}
+
+.pianoEditorNote.selected {
+	background-color: lawngreen;
+}
+
+.pianoEditorNote.ignoreMouse {
+	pointer-events: none;
+}
+
+/* -- Selection --- */
+
+.selectionRectangle {
+	position: fixed;
+	outline: solid lawngreen 5px;
+	z-index: 666;
+	pointer-events: none;
+}

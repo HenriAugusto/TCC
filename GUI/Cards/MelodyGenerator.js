@@ -20,7 +20,18 @@ class MelodyGenerator extends SequenceGenerator {
      * @returns {INoteSequence} The generated INoteSequence
      */
     async generateSequence(){
-        let seq = (await music_vae_mel_4bar_q2.sample(1, vae_temperature))[0];
+        //let seq = (await music_vae_mel_4bar_q2.sample(1, vae_temperature))[0];
+        let seq = await VAE.getNew4BarMelody();
         return seq;
+    }
+
+    /**
+     * Reconstructs a object from it snapshot. Meant to be used with {@link SaveLoad}.
+     * @static
+     * @param {Object} obj - As returned from the {@link save()} method.
+     * @returns
+     */
+    static load(obj){
+        return new MelodyGenerator(obj.noteSequence, obj.title);
     }
 }

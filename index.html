@@ -5,50 +5,71 @@
     <link rel="stylesheet" href="style.css">
     <link rel="icon" href="favicon.png" type="image/png">
     <meta charset="UTF-8">
+
+	<!-- Libs -->
+	<script src="https://cdn.jsdelivr.net/npm/@tonaljs/tonal/browser/tonal.min.js" defer></script>
+	<script src="https://cdn.jsdelivr.net/npm/@magenta/music@1.22.1/dist/magentamusic.min.js" defer></script>
+
+	<!-- Classes -->
+	<script src='GUI/Tooltip.js' defer></script>
+	<script src='core/Playback.js' defer></script>
+	<script src='core/SequenceUtils.js' defer></script>
+	<script src='GUI\DragAndDrop\DragAndDrop.js' defer></script>
+	<script src='GUI\Cards\Card.js' defer></script>
+	<script src='GUI\Cards\EditorCard.js' defer></script>
+	<script src='GUI\Cards\SequenceCard.js' defer></script>
+	<script src='GUI\Cards\ContinueCard.js' defer></script>
+	<script src='GUI\Cards\VariationsCard.js' defer></script>
+	<script src='GUI\Cards\SequenceGenerator.js' defer></script>
+	<script src='GUI\Cards\MelodyGenerator.js' defer></script>
+	<script src='GUI\Cards\DrumsGenerator.js' defer></script>
+	<script src='GUI\Cards\InterpolationCard.js' defer></script>
+	<script src='GUI\Timeline\TimelineStep.js' defer></script>
+	<script src='GUI\Timeline\TimelineRuler.js' defer></script>
+	<script src='GUI\Timeline\Timeline.js' defer></script>
+	<script src='GUI\Timeline\Track.js' defer></script>
+	<script src='GUI\CardHolder.js' defer></script>
+	<script src='GUI\Deck.js' defer></script>
+
+	<!-- Core -->
+	<script src='core/Game.js' defer></script>
+	<script src='core/CardGenerator.js' defer></script>
+	<script src='GUI/GUI.js' defer></script>
+	<script src='core/SaveLoad.js' defer></script>
+	<script src='noteSequences/Melodies.js' defer></script>
+	<script src='noteSequences/DrumSequences.js' defer></script>
+	<script src='magenta/RNN.js' defer></script>
+	<script src='magenta/VAE.js' defer></script>
+	<script src='magenta/VAE_MidiMe.js' defer></script>
+	<script src='core/core.js' type='module'></script>
 </head>
 
-<body onload='initialize()'>
-
+<body>
+	<div>
+		<input value='untitled' id='nameInput' onchange="Game.setName(this.value)"></input>
+	</div>
 	<div id="timeline"></div>
 
 	<div class="slidecontainer">
-		<input type="range" min="0.5" max="1.5" value="1" step="0.05" class="slider" id="temperatureSlider">
-		<label>Temperature: </label>
-		<span id="temperatureDisplay"></span>	
+		<input id="temperatureSliderVAE" type="range" min="0.5" max="1.5" value="1" step="0.05" class="slider">
+		<label>VAE Temperature: </label>
+		<span id="temperatureDisplayVAE"></span>
 	</div>
 
-	<button onclick='MAIN_TIMELINE.play()'>PLAY</button>
-	<button onclick='Playback.stop()'>STOP</button>
+	<div class="slidecontainer">
+		<input id="temperatureSliderRNN" type="range" min="0.5" max="1.5" value="1" step="0.05" class="slider">
+		<label>RNN Temperature: </label>
+		<span id="temperatureDisplayRNN"></span>
+	</div>
 
 	<div id="cardHolder" class="cardHolder"></div>
-	
-	<!-- Libs -->
-	<!-- <script src="https://cdn.jsdelivr.net/npm/@tonaljs/tonal/browser/tonal.min.js"></script> -->
-	<script src="https://cdn.jsdelivr.net/npm/@magenta/music@1.22.1/dist/magentamusic.min.js"></script>
-
-	<!-- Classes -->
-	<script src='core/Player.js'></script>
-	<script src='core/SequenceUtils.js'></script>
-	<script src='GUI\DragAndDrop\DragAndDrop.js'></script>
-	<script src='GUI\Cards\Card.js'></script>
-	<script src='GUI\Cards\SequenceCard.js'></script>
-	<script src='GUI\Cards\SequenceGenerator.js'></script>
-	<script src='GUI\Cards\MelodyGenerator.js'></script>
-	<script src='GUI\Cards\DrumsGenerator.js'></script>
-	<script src='GUI\Cards\InterpolationCard.js'></script>
-	<script src='GUI\Timeline\TimelineStep.js'></script>
-	<script src='GUI\Timeline\Timeline.js'></script>
-	<script src='GUI\Timeline\Track.js'></script>
-
-	<!-- Core -->
-	<script src='GUI/GUI.js'></script>
-	<script src='noteSequences/Melodies.js'></script>
-	<script src='noteSequences/DrumSequences.js'></script>
-	<script src='magenta/music_RNN.js'></script>
-	<script src='magenta/music_VAE.js'></script>
-	<script src='core/core.js'></script>
-	
-
+	<div id="mainMenu">
+		<div id="mainMenuArrow">▲</div>
+		<div id="mainMenuButtons">
+			<button onclick='SaveLoad.load()' class='loadBtn'>LOAD</button>
+			<button onclick='SaveLoad.save()' class='saveBtn'>SAVE</button>
+		</div>
+	</div>
 </body>
 
 </html>
