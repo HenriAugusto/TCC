@@ -149,6 +149,14 @@ class Deck {
     }
 
     /**
+     * Empties the deck
+     */
+    removeAllCards(){
+        this.cards = [];
+        this.disable();
+    }
+
+    /**
      * Signals to the user the deck has Cards
      */
     enable(){
