@@ -11,6 +11,7 @@ class Playback {
     
     static play(seq){
         let newSeq = Object.assign ({}, seq);
+        let newSeq = mm.sequences.clone(seq);
         newSeq.tempos = [ {qpm: Playback.tempo } ];
         Playback.stop();
         Playback.activePlayer.start(newSeq);
