@@ -5,6 +5,8 @@ async function initialize(){
 
     EditorCard.pianoEditor = new PianoEditor();
 
+    Playback.initialize(MAIN_TIMELINE);
+
     /* The first models we are gonna need are the ones that
      * are capable of generating melodies. To speed up initialization
      * we initialize them first and only then initialize the rest */

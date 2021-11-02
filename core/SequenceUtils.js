@@ -38,4 +38,24 @@ class SequenceUtils {
             totalQuantizedSteps: 64
           };
     }
+
+    /**
+     * Given a NoteSequence returns another sequence starting at the specified
+     * position of the original
+     * @param {INoteSequence} seq
+     * @param {number} start
+     * @returns {INoteSequence}
+     */
+    static startingAt(seq, start){
+        let out = mm.sequences.clone(seq);
+        out.notes = out.notes.filter( note => {
+            return note.quantizedStartStep >= start;
+        });
+        out.notes.forEach( note => {
+            note.quantizedStartStep -= start;
+            note.quantizedEndStep -= start;
+        });
+        out.totalQuantizedSteps -= start;
+        return out;
+    }
 }
