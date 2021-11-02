@@ -1,11 +1,43 @@
 class TimelineRuler {
+    div;
     timeline;
     snap = 4;
     playbackLoop;
+    startingPos;
+    currPos;
 
     constructor(timeline){
         this.timeline = timeline;
         this.addRulerSteps();
+    }
+
+    start(pos){
+        this.startingPos = pos;
+        this.currPos = pos;
+        let interval = 1000*60/(Playback.tempo*4); //4 steps per quarter note
+        this.stop();
+        this.playbackLoop = setInterval(() => {
+            this.clearPlayheads();
+            try{
+                this.div.children[this.currPos++].classList.add("playhead");
+            } catch(e) {
+                this.stop();
+            }
+        } , interval);
+    }
+
+    stop(){
+        if(this.playbackLoop) clearInterval(this.playbackLoop);
+        this.clearPlayheads();
+    }
+
+    setPos(pos){
+        this.currPos = pos;
+    }
+
+    clearPlayheads(){
+        let ph = this.div.querySelectorAll(".playhead");
+        ph.forEach( x => x.classList.remove("playhead") );
     }
 
     addRulerSteps(){
@@ -13,6 +45,7 @@ class TimelineRuler {
         let tln = this.timeline.node;
         let container = document.createElement("div");
             container.classList.add("timelineRuler");
+        this.div = container;
         for(let i = 0; i < tl.steps; i++){
             let step = document.createElement("div");
                 step.classList.add("timelineRulerStep");
@@ -22,21 +55,9 @@ class TimelineRuler {
                 snapStep  = Math.min(tl.steps-1, snapStep);
             let pos = snapStep;
             step.addEventListener("click", () => {
-                let seq = SequenceUtils.startingAt(MAIN_TIMELINE.timelineToNoteSequence(), snapStep);
+                this.start(pos);
+                let seq = SequenceUtils.startingAt(MAIN_TIMELINE.timelineToNoteSequence(), pos);
                 Playback.play(seq);
-                let interval = 1000*60/(Playback.tempo*4); //4 steps per quarter note
-                this.playbackLoop = setInterval(() => {
-                    let ph = container.querySelectorAll(".playhead");
-                    ph.forEach( x => {
-                        x.classList.remove("playhead");
-                    });
-                    try{
-                        container.children[pos++].classList.add("playhead");
-                    } catch(e) {
-                        clearInterval(this.playbackLoop);
-                    }
-
-                } , interval);
             });
             step.addEventListener("mouseenter", (ev) => {
                 container.children[snapStep].classList.add("mouseOver");
