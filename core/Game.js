@@ -1,5 +1,5 @@
 class Game {
-    static name = "untitled";
+    static gameName = "untitled";
     static maxHandSize = 20;
     static deckSize = 60;
     static weights = {
@@ -13,7 +13,7 @@ class Game {
     }
 
     static setName(str){
-        Game.name = str;
+        Game.gameName = str;
     }
 
     /**
@@ -23,7 +23,7 @@ class Game {
     */
     static save(){
         return {
-            name: Game.name,
+            gameName: Game.gameName,
             maxHandSize: Game.maxHandSize,
             deckSize: Game.deckSize,
             weights: Game.weights
@@ -37,7 +37,7 @@ class Game {
      * @returns
      */
     static load(obj){
-        Game.name = obj.name;
+        Game.gameName = obj.gameName;
         Game.maxHandSize = obj.maxHandSize;
         Game.deckSize = obj.deckSize;
         Game.weights = obj.weights;
