@@ -5,6 +5,8 @@ function initGUI(){
     MAIN_TIMELINE.addEmptyTrack();
     MAIN_TIMELINE.addEmptyTrack();
     MAIN_TIMELINE.addEmptyTrack();
+    MAIN_TIMELINE.addEmptyTrack();
+    MAIN_TIMELINE.addEmptyTrack();
     initTemperatureSlider();
     PLAYER_HAND = new CardHolder( document.getElementById("cardHolder") );
     MAIN_DECK = new Deck();
