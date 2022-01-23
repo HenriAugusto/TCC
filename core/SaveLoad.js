@@ -32,13 +32,16 @@ class SaveLoad {
 
     static download(JSONString, filename){
         const a = document.createElement("a");
-        a.href = URL.createObjectURL(
-            new Blob( [JSONString], { type: "text/plain" } )
-        );
+        let blob = new Blob( [JSONString], { type: "text/plain" } );
+        a.href = URL.createObjectURL(blob);
         a.setAttribute("download", filename);
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
+        // https://stackoverflow.com/questions/64179468/how-to-convert-a-magenta-js-note-sequence-to-a-midi-file
+        // https://stackoverflow.com/questions/29200256/wait-for-user-to-finish-downloading-a-blob-in-javascript/66905746
+        setTimeout( () => URL.revokeObjectURL(a.href), 0);
+
     }
 
     static loadCard(obj){
